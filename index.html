@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AtmosX Pro - Enterprise Weather Intelligence</title>
+  
+  <!-- Leaflet CSS for Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="theme-default">
+  <div class="app-container">
+    <!-- Navbar Header -->
+    <header class="navbar">
+      <div class="logo"><i class="fa-solid fa-cloud-bolt"></i> AtmosX Pro</div>
+      
+      <!-- Search Box with Autocomplete -->
+      <div class="search-wrapper">
+        <div class="search-box">
+          <input type="text" id="cityInput" placeholder="Search city..." autocomplete="off" />
+          <button id="searchBtn" title="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+          <button id="locationBtn" class="btn-icon" title="GPS Location"><i class="fa-solid fa-location-crosshairs"></i></button>
+        </div>
+        <div id="autocompleteList" class="autocomplete-dropdown hidden"></div>
+      </div>
+
+      <!-- Unit Switcher -->
+      <div class="unit-toggle">
+        <button id="unitC" class="unit-btn active">°C</button>
+        <button id="unitF" class="unit-btn">°F</button>
+      </div>
+
+      <button id="bookmarkBtn" class="btn-icon" title="Bookmark City"><i class="fa-regular fa-bookmark"></i></button>
+      <button id="notifyBtn" class="btn-icon" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+    </header>
+
+    <!-- Weather Alert Banner -->
+    <div id="alertBanner" class="alert-banner hidden">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <span id="alertText">Severe Weather Warning!</span>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <main class="dashboard-grid">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="card">
+          <h3><i class="fa-solid fa-star"></i> Saved Favorites</h3>
+          <div id="favoritesList" class="favorites-list">
+            <p class="empty-msg">No saved cities yet.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Searches</h3>
+          <div id="recentList" class="recent-list">
+            <!-- Dynamic Recent Items -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center Main Content -->
+      <section class="main-content">
+        <!-- Current Weather Overview -->
+        <div class="card current-weather" id="weatherCard">
+          <div id="loadingOverlay" class="loading-overlay hidden">
+            <i class="fa-solid fa-spinner fa-spin"></i> Fetching Live Data...
+          </div>
+          <div class="cw-header">
+            <div>
+              <h1 id="cityName">--</h1>
+              <p id="weatherDesc">--</p>
+            </div>
+            <h1 id="tempDisplay">--°C</h1>
+          </div>
+          <div class="metrics-grid">
+            <div><i class="fa-solid fa-droplet"></i> Humidity: <span id="humidityVal">--</span>%</div>
+            <div><i class="fa-solid fa-wind"></i> Wind: <span id="windVal">--</span> km/h</div>
+            <div><i class="fa-solid fa-sun"></i> UV Index: <span id="uvVal">--</span></div>
+            <div><i class="fa-solid fa-mask-ventilator"></i> AQI: <span id="aqiVal">--</span></div>
+          </div>
+        </div>
+
+        <!-- 24-Hour Slider -->
+        <div class="card">
+          <h3><i class="fa-solid fa-clock"></i> 24-Hour Forecast (3-Hr Intervals)</h3>
+          <div id="hourlyContainer" class="hourly-slider">
+            <!-- Dynamic Hourly Items -->
+          </div>
+        </div>
+
+        <!-- Temperature & Rain Trend Chart -->
+        <div class="card chart-card">
+          <h3><i class="fa-solid fa-chart-line"></i> Temperature & Rain Probability Analytics</h3>
+          <div class="chart-container">
+            <canvas id="weatherChart"></canvas>
+          </div>
+        </div>
+
+        <!-- 5-Day Forecast -->
+        <div class="card">
+          <h3><i class="fa-solid fa-calendar-days"></i> 5-Day Extended Forecast</h3>
+          <div id="forecastContainer" class="forecast-grid">
+            <!-- Dynamic 5-day items -->
+          </div>
+        </div>
+
+        <!-- Smart Recommendations -->
+        <div class="card">
+          <h3><i class="fa-solid fa-lightbulb"></i> Smart Lifestyle Insights</h3>
+          <div id="lifestyleList" class="lifestyle-grid">
+            <!-- Dynamic Insights -->
+          </div>
+        </div>
+
+        <!-- Interactive Map -->
+        <div class="card map-card">
+          <div class="map-header">
+            <h3><i class="fa-solid fa-map-location-dot"></i> Live Weather Radar</h3>
+            <div class="map-controls">
+              <button class="map-btn active" data-layer="clouds">Clouds</button>
+              <button class="map-btn" data-layer="precipitation">Rain</button>
+              <button class="map-btn" data-layer="wind">Wind</button>
+              <button class="map-btn" data-layer="temp">Temp</button>
+            </div>
+          </div>
+          <div id="map"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- App JS Files -->
+  <script src="api.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
