@@ -281,17 +281,23 @@ body {
 }
 
 /* CRITICAL FIX FOR CHART CANVAS OVERFLOW */
+/* Container ko flex/grid layout ke andar strictly lock karein */
 .chart-container {
   position: relative;
   height: 250px;
-  width: 100% !important;
+  width: 100%;
   max-width: 100%;
   overflow: hidden;
+  min-width: 0; /* Important: Grid/Flex parent ko stretch hone se rokta hai */
 }
 
+/* Canvas ko absolute position dein taake yeh parent container ki width ko force na kare */
 .chart-container canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 100% !important;
-  max-width: 100% !important;
+  height: 100% !important;
 }
 
 /* 5-Day Forecast Grid */
