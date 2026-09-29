@@ -1,15 +1,13 @@
 {
-  "short_name": "AtmosX",
-  "name": "AtmosX Weather Dashboard",
+  "name": "Sunny Buddy - Weather for Kids",
+  "short_name": "Sunny Buddy",
+  "description": "A friendly weather app for kids: forecast, what to wear, what to play.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#dff3ff",
+  "theme_color": "#4fc3f7",
   "icons": [
-    {
-      "src": "https://cdn-icons-png.flaticon.com/512/1163/1163661.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": "/",
-  "background_color": "#0f172a",
-  "theme_color": "#1e293b",
-  "display": "standalone"
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
 }
