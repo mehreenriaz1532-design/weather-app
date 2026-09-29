@@ -379,7 +379,7 @@ footer a{color:inherit;font-weight:600}
   <footer>
     Weather by <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> ·
     Rain radar by <a href="https://www.rainviewer.com/" target="_blank" rel="noopener">RainViewer</a> ·
-    Map © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors
+    Map tiles © <a href="https://www.esri.com/" target="_blank" rel="noopener">Esri</a>
   </footer>
 </div>
 
@@ -876,8 +876,9 @@ function drawChart() {
 function initMap() {
   if (typeof L === 'undefined') { $('mapCard').classList.add('hidden'); return; }
   state.map = L.map('map', { scrollWheelZoom: false }).setView([20, 0], 3);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 18, attribution: '&copy; OpenStreetMap contributors'
+  // Esri base map: no API key needed, and it avoids the 403 blocks you got with OpenStreetMap
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 18, attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
   }).addTo(state.map);
   setLayer(state.layer);
 }
@@ -1147,7 +1148,7 @@ function start() {
   updateBell(); renderChips(); renderBadges(); showFact(false);
   initMap();
   loadPlace(store.get('sb_last', null) ||
-    { name: 'London', region: 'England', country: 'United Kingdom', lat: 51.50853, lon: -0.12574 });
+    { name: 'Bahawalpur', region: 'Punjab', country: 'Pakistan', lat: 29.3956, lon: 71.6836 });
 }
 // Leaflet and Chart.js load with "defer", so wait until the page has fully loaded.
 if (document.readyState === 'complete') start();
