@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sunny Buddy - Weather for Kids</title>
-<meta name="description" content="Sunny Buddy tells kids what the weather is, what to wear, and what to play. Live forecast, radar map, and fun facts.">
+<meta name="description" content="Sunny Buddy and Sunny Bear tell kids the weather, what to wear, what to play, plus a daily quiz, badges, sounds and a world map.">
 <meta name="theme-color" content="#4fc3f7">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%80%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%BB%3C/text%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,12 +18,12 @@
 
 <style>
 /* =========================================================
-   SUNNY BUDDY - styles
+   SUNNY BUDDY v2 - styles
    ========================================================= */
 :root{
   --ink:#1f2a44; --sub:#4a5a7a; --line:#dbe4f3;
-  --blue:#3b82f6; --blue-dark:#2563eb;
-  --orange:#ff922b; --orange-dark:#e8710a;
+  --blue:#2563eb; --blue-dark:#1d4ed8;
+  --orange:#ff922b; --orange-dark:#d9480f;
   --pink:#ff6b9d; --green:#2f9e44; --yellow:#ffd43b;
   --card:rgba(255,255,255,.93);
 }
@@ -58,8 +58,7 @@ button{font:inherit;color:inherit}
   background:radial-gradient(circle,#fffde0 0%,rgba(255,226,64,.6) 34%,rgba(255,226,64,0) 70%);animation:pulse 6s ease-in-out infinite}
 .moonglow{position:absolute;top:-90px;right:-60px;width:340px;height:340px;border-radius:50%;
   background:radial-gradient(circle,#fffbe6 0%,rgba(255,244,190,.5) 30%,rgba(255,244,190,0) 68%);animation:pulse 8s ease-in-out infinite}
-.cdrift{position:absolute;left:0;width:180px;height:56px;border-radius:56px;background:rgba(255,255,255,.85);
-  animation:drift linear infinite}
+.cdrift{position:absolute;left:0;width:180px;height:56px;border-radius:56px;background:rgba(255,255,255,.85);animation:drift linear infinite}
 .cdrift::before,.cdrift::after{content:"";position:absolute;background:inherit;border-radius:50%}
 .cdrift::before{width:76px;height:76px;top:-38px;left:26px}
 .cdrift::after{width:100px;height:100px;top:-54px;right:24px}
@@ -82,8 +81,7 @@ button{font:inherit;color:inherit}
   box-shadow:0 6px 0 rgba(31,42,68,.10),0 14px 30px rgba(31,42,68,.12);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 h2{font-size:1.25rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .empty{color:var(--sub);font-size:.95rem}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.two .card{margin-bottom:20px}
+.hint{color:var(--sub);margin:-6px 0 12px}
 
 /* ---------- top bar ---------- */
 .top{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
@@ -93,28 +91,37 @@ h2{font-size:1.25rem;font-weight:700;margin-bottom:14px;display:flex;align-items
 .search{display:flex;gap:8px;background:#fff;border:3px solid var(--line);border-radius:999px;padding:4px}
 .search:focus-within{border-color:var(--blue)}
 .search input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:1.05rem;padding:0 14px;color:var(--ink);outline:none}
-.search input::placeholder{color:#7d8aa5}
+.search input::placeholder{color:#6b7891}
 .btn{border:0;cursor:pointer;border-radius:999px;min-height:46px;padding:0 20px;font-weight:600;transition:transform .12s}
 .btn:active{transform:translateY(3px)}
 .btn-primary{background:var(--blue);color:#fff;box-shadow:0 4px 0 var(--blue-dark)}
 .btn-primary:active{box-shadow:0 1px 0 var(--blue-dark)}
-.btn-fun{background:var(--orange);color:#fff;box-shadow:0 4px 0 var(--orange-dark);font-size:1.05rem}
-.btn-fun:active{box-shadow:0 1px 0 var(--orange-dark)}
+.btn-fun{background:var(--orange);color:var(--ink);box-shadow:0 4px 0 #e8710a;font-size:1.05rem}
+.btn-fun:active{box-shadow:0 1px 0 #e8710a}
+.btn-sound{background:#e7f5ff;border:2px solid #a5d8ff;box-shadow:0 4px 0 #a5d8ff;font-size:1.05rem}
+.btn-sound[aria-pressed=true]{background:#b2f2bb;border-color:#69db7c;box-shadow:0 4px 0 #69db7c}
 .btn-round{width:46px;height:46px;padding:0;background:#fff;box-shadow:0 4px 0 var(--line);border:2px solid var(--line);font-size:1.35rem;line-height:1}
 .search .btn-round{box-shadow:none;border:0;background:#eef5ff}
 .toggle{display:flex;background:#fff;border:3px solid var(--line);border-radius:999px;padding:3px}
 .toggle button{border:0;background:transparent;cursor:pointer;border-radius:999px;min-width:52px;min-height:38px;font-weight:700}
-.toggle button.on{background:var(--orange);color:#fff}
+.toggle button.on{background:var(--orange);color:var(--ink)}
 .sug{position:absolute;left:8px;right:8px;top:calc(100% + 6px);background:#fff;border-radius:20px;border:3px solid var(--line);
   list-style:none;z-index:50;overflow:hidden;box-shadow:0 14px 30px rgba(31,42,68,.18)}
 .sug li{padding:12px 16px;cursor:pointer;font-weight:500}
 .sug li[aria-selected=true],.sug li:hover{background:#e7f1ff}
 .sug li.none{cursor:default;color:var(--sub)}
 
-/* ---------- alert ---------- */
-.alert{display:flex;gap:12px;align-items:center;background:#fff3bf;border:3px solid #ffd43b;color:#5c3d00;
+/* ---------- alerts + gentle safety notes ---------- */
+.alert{display:flex;gap:12px;align-items:center;background:#ffe3e3;border:3px solid #ff8787;color:#5f1414;
   border-radius:22px;padding:14px 18px;margin-bottom:20px;font-weight:600;box-shadow:0 5px 0 rgba(0,0,0,.08)}
 .alert .ai{font-size:2rem}
+#safety{margin-bottom:8px}
+.note{display:flex;gap:12px;align-items:center;background:#fff9db;border:3px solid #ffe066;color:#5c4400;
+  border-radius:22px;padding:10px 8px 10px 16px;margin-bottom:12px;font-weight:600;box-shadow:0 5px 0 rgba(0,0,0,.06)}
+.note .ne{font-size:1.9rem;line-height:1}
+.note .nx{flex:1}
+.note-x{border:0;background:transparent;cursor:pointer;min-width:44px;min-height:44px;font-size:1.1rem;border-radius:50%}
+.note-x:hover{background:rgba(0,0,0,.06)}
 
 /* ---------- places chips ---------- */
 .places{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -126,12 +133,13 @@ h2{font-size:1.25rem;font-weight:700;margin-bottom:14px;display:flex;align-items
 .chip .x{padding:0 12px 0 6px;color:#c92a2a;font-weight:700}
 
 /* ---------- hero ---------- */
-.hero{position:relative;display:grid;grid-template-columns:minmax(210px,300px) 1fr;gap:24px;align-items:center;padding:26px}
-.hero-left{display:flex;flex-direction:column;align-items:center;gap:10px}
-.buddy{width:min(250px,60vw);aspect-ratio:1}
-.buddy svg{width:100%;height:100%;overflow:visible;animation:bob 4s ease-in-out infinite;filter:drop-shadow(0 8px 0 rgba(31,42,68,.10))}
+.hero{position:relative;display:grid;grid-template-columns:minmax(230px,320px) 1fr;gap:24px;align-items:center;padding:26px}
+.hero-left{display:flex;flex-direction:column;align-items:center;gap:8px}
+.bear{width:min(270px,66vw);aspect-ratio:280/370}
+.bear svg{width:100%;height:100%;overflow:visible;animation:bob 4s ease-in-out infinite;filter:drop-shadow(0 8px 0 rgba(31,42,68,.10))}
 .bubble{position:relative;background:#fff;border:3px solid var(--line);border-radius:22px;padding:10px 16px;font-weight:600;text-align:center}
 .bubble::before{content:"";position:absolute;left:50%;top:-12px;margin-left:-10px;border:10px solid transparent;border-top:0;border-bottom-color:var(--line)}
+.outfit-line{color:var(--sub);font-size:.95rem;text-align:center}
 .date{color:var(--sub);font-weight:500}
 .hero h1{font-size:clamp(2rem,6vw,3.1rem);line-height:1.05;font-weight:700;letter-spacing:-.5px;word-break:break-word}
 .place-line{color:var(--sub);font-weight:500;margin-top:2px}
@@ -139,12 +147,30 @@ h2{font-size:1.25rem;font-weight:700;margin-bottom:14px;display:flex;align-items
 .tempbig{font-size:clamp(3.6rem,12vw,5.6rem);font-weight:700;line-height:1;color:var(--orange-dark);letter-spacing:-2px}
 .wxemoji{font-size:3rem;line-height:1}
 .wxtext{font-size:1.35rem;font-weight:600}
-.sun-line{color:var(--sub);margin:6px 0 16px}
+.sun-line{color:var(--sub);margin:6px 0 14px}
+.audio-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.vol{display:flex;align-items:center;gap:6px;font-size:1.2rem}
+.vol input{width:110px;accent-color:var(--blue)}
+.sound-name{color:var(--sub);font-size:.95rem;min-height:1.3em;margin-top:8px}
 .loading{position:absolute;inset:0;background:rgba(255,255,255,.92);border-radius:25px;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:10px;z-index:5;font-weight:600}
 .loading .spin{font-size:3.4rem;animation:bounce 1s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+/* ---------- Sunny Bear (layered SVG) ---------- */
+.bear .layer{opacity:0;transform:translateY(-18px) scale(.85);transform-box:fill-box;transform-origin:center;
+  transition:opacity .3s ease,transform .5s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
+.bear .layer.on{opacity:1;transform:none}
+.bear .wig{transform-box:fill-box;transform-origin:50% 100%}
+.bear.pop .wig{animation:wiggle .7s ease}
+.bear .eyes{transform-box:fill-box;transform-origin:center;animation:blink 5s infinite}
+.bear .flutter{transform-box:fill-box;transform-origin:top left;animation:flutter .5s ease-in-out infinite alternate}
+.bear .kite-sway{transform-box:fill-box;transform-origin:50% 100%;animation:kite 2.4s ease-in-out infinite alternate}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-4deg)}60%{transform:rotate(4deg)}}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+@keyframes flutter{from{transform:rotate(-6deg)}to{transform:rotate(12deg)}}
+@keyframes kite{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
 
 /* ---------- tiles ---------- */
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:20px}
@@ -154,6 +180,29 @@ h2{font-size:1.25rem;font-weight:700;margin-bottom:14px;display:flex;align-items
 .tile .tl{color:var(--sub);font-weight:500;margin-top:4px}
 .tile .tv{font-size:1.7rem;font-weight:700;line-height:1.2}
 .tile .tn{font-size:.95rem;font-weight:600;margin-top:2px}
+
+/* ---------- scenario card (wear + do) ---------- */
+.sc{border-top:10px solid var(--sc,#3b82f6)}
+.sc-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.sc-emoji{font-size:3rem;line-height:1}
+.sc-title{font-size:1.5rem;font-weight:700;line-height:1.1}
+.sc-tag{color:var(--sub)}
+.sc-flag{background:#fff3bf;border:2px solid #ffd43b;border-radius:999px;padding:2px 12px;font-weight:600;font-size:.9rem}
+.sc-try{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 18px}
+.sc-try .lbl{font-weight:600;margin-right:4px}
+.sc-try button{border:2px solid var(--line);background:#fff;border-radius:999px;min-height:44px;padding:0 14px;cursor:pointer;font-weight:600}
+.sc-try button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--sc,#3b82f6)}
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.sc-grid h2{font-size:1.1rem}
+.sc-tip{margin-top:16px;background:#fff9db;border:2px solid #ffe066;border-radius:16px;padding:10px 14px;font-weight:600}
+.wear{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.wear div{display:flex;align-items:center;gap:10px;background:#eef5ff;border:2px solid var(--line);border-radius:18px;padding:10px 12px;font-weight:600}
+.wear .we{font-size:1.7rem}
+.tips{display:grid;gap:10px}
+.tipc{display:flex;gap:12px;align-items:flex-start;background:#f0fbea;border:2px solid #cfeec0;border-radius:18px;padding:12px 14px}
+.tipc .te{font-size:1.9rem;line-height:1}
+.tipc b{display:block}
+.tipc span{color:var(--sub)}
 
 /* ---------- hourly + days ---------- */
 .hourly{display:flex;gap:12px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x proximity}
@@ -171,15 +220,51 @@ h2{font-size:1.25rem;font-weight:700;margin-bottom:14px;display:flex;align-items
 .d-temp small{font-weight:500;color:var(--sub);font-size:1rem}
 .d-desc{font-size:.92rem;color:var(--sub);font-weight:500}
 
-/* ---------- wear + play ---------- */
-.wear{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
-.wear div{display:flex;align-items:center;gap:10px;background:#eef5ff;border:2px solid var(--line);border-radius:18px;padding:10px 12px;font-weight:600}
-.wear .we{font-size:1.7rem}
-.tips{display:grid;gap:10px}
-.tipc{display:flex;gap:12px;align-items:flex-start;background:#f0fbea;border:2px solid #cfeec0;border-radius:18px;padding:12px 14px}
-.tipc .te{font-size:1.9rem;line-height:1}
-.tipc b{display:block}
-.tipc span{color:var(--sub)}
+/* ---------- quiz + badges ---------- */
+.q-stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.q-stats span{background:#fff3bf;border:2px solid #ffe066;border-radius:999px;padding:4px 14px;font-weight:700}
+.q-text{font-size:1.25rem;font-weight:600;margin-bottom:12px}
+.q-opts{display:grid;gap:10px}
+.q-opt{text-align:left;border:3px solid var(--line);background:#fff;border-radius:20px;padding:12px 16px;min-height:52px;
+  cursor:pointer;font-weight:600;font-size:1.05rem;transition:transform .12s,border-color .12s}
+.q-opt:hover:not(:disabled){transform:translateY(-2px);border-color:var(--blue)}
+.q-opt:disabled{cursor:default;color:var(--ink)}
+.q-opt.right{background:#d3f9d8;border-color:#2f9e44}
+.q-opt.wrong{background:#ffe3e3;border-color:#e03131}
+.q-why{margin-top:12px;background:#eef5ff;border-radius:16px;padding:12px 14px}
+.q-actions{margin-top:12px}
+.explored{color:var(--sub);margin-bottom:12px}
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.bcard{background:#fff8db;border:2px solid #ffe066;border-radius:20px;padding:12px 10px;text-align:center}
+.bcard.locked{background:#f1f3f5;border-color:#dee2e6;filter:grayscale(1);opacity:.8}
+.bcard .be{font-size:2.3rem;line-height:1.2}
+.bcard b{display:block;line-height:1.2}
+.bcard small{color:var(--sub);display:block;margin-top:2px;line-height:1.25}
+
+/* ---------- did you know ---------- */
+.dyk-card{display:flex;gap:16px;align-items:center;background:#f3f0ff;border:3px solid #d0bfff;border-radius:24px;padding:18px}
+.dyk-e{font-size:3.4rem;line-height:1}
+.dyk-card b{font-size:1.15rem}
+.dyk-card p{color:var(--ink);margin-top:2px}
+.dyk-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.dyk-count{color:var(--sub);font-weight:500}
+
+/* ---------- world explorer ---------- */
+.world-wrap{overflow-x:auto;border-radius:22px;border:3px solid var(--line);background:#74c0fc}
+#world{display:block;min-width:780px;width:100%;height:auto}
+#world .land{fill:#8fdc9e;stroke:#3fae6a;stroke-width:2.5;stroke-linejoin:round}
+#world .grat{stroke:#fff;stroke-opacity:.35;stroke-dasharray:4 6}
+.city{cursor:pointer;outline:none}
+.city .dot{fill:#fff;stroke:#2563eb;stroke-width:3;transform-box:fill-box;transform-origin:center;transition:transform .15s}
+.city:hover .dot,.city:focus-visible .dot{transform:scale(1.2)}
+.city .ring{fill:none;stroke:#ff922b;stroke-width:3;opacity:0;transform-box:fill-box;transform-origin:center}
+.city.sel .ring{opacity:1;animation:ping 1.6s ease-out infinite}
+.city.sel .dot{stroke:#ff922b;stroke-width:4}
+.city .em{font-size:20px;pointer-events:none}
+.city .lab{font-family:'Fredoka',sans-serif;font-weight:700;font-size:13px;fill:#1f2a44;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round;pointer-events:none}
+.city:focus-visible .hit{stroke:#7c3aed;stroke-width:3;fill:rgba(124,58,237,.12)}
+@keyframes ping{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+.world-caption{margin:10px 0;font-weight:600;min-height:1.4em}
 
 /* ---------- chart / map ---------- */
 .chart-box{position:relative;height:270px}
@@ -192,40 +277,24 @@ h2{font-size:1.25rem;font-weight:700;margin-bottom:14px;display:flex;align-items
 .map-note{color:var(--sub);font-size:.95rem;margin-top:8px;min-height:1.4em}
 .pin{font-size:2rem;line-height:1;filter:drop-shadow(0 3px 2px rgba(0,0,0,.3))}
 
-/* ---------- fun corner ---------- */
-.fact{background:#fff3bf;border:2px solid #ffe066;border-radius:20px;padding:14px 16px;font-weight:500;margin-bottom:12px}
-.badges{display:flex;flex-wrap:wrap;gap:10px}
-.badge{display:flex;align-items:center;gap:8px;background:#eef5ff;border:2px solid var(--line);border-radius:999px;padding:6px 14px 6px 8px;font-weight:600}
-.badge .be{font-size:1.5rem}
-.badge.locked{filter:grayscale(1);opacity:.5}
-.explored{color:var(--sub);margin-bottom:10px}
 footer{text-align:center;color:var(--onsky);font-size:.92rem;padding:8px 10px}
 footer a{color:inherit;font-weight:600}
-#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:14px 22px;border-radius:999px;
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:14px 22px;border-radius:24px;
   font-weight:600;opacity:0;pointer-events:none;transition:.3s;z-index:300;max-width:90vw;text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
-
-/* ---------- buddy svg bits ---------- */
-.eyes{transform-box:fill-box;transform-origin:center;animation:blink 5s infinite}
-.rays{transform-box:fill-box;transform-origin:center;animation:spin 26s linear infinite}
-.rdrop{animation:dropfall 1.4s ease-in infinite}
-.fl{animation:sway 4s ease-in-out infinite}
-.bolt{animation:glow 2.6s ease-in-out infinite}
-.sflake{animation:dropfall 2.4s ease-in infinite}
-@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes dropfall{0%{transform:translateY(-4px);opacity:0}25%{opacity:1}100%{transform:translateY(32px);opacity:0}}
-@keyframes sway{0%,100%{transform:translateX(-8px)}50%{transform:translateX(8px)}}
-@keyframes glow{0%,100%{opacity:.75}50%{opacity:1}}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:250;overflow:hidden}
+.confetti i{position:absolute;top:-30px;font-style:normal;animation:confall ease-in forwards}
+@keyframes confall{to{transform:translate3d(var(--dx,0),110vh,0) rotate(540deg)}}
 
 /* ---------- responsive ---------- */
 @media (max-width:820px){
-  .two,.places{grid-template-columns:1fr}
+  .sc-grid,.places{grid-template-columns:1fr}
   .hero{grid-template-columns:1fr;text-align:center}
-  .temp-row{justify-content:center}
+  .temp-row,.audio-row{justify-content:center}
   .brand{width:100%;justify-content:center;margin-right:0}
   .searchwrap{flex-basis:100%}
   #map{height:280px}
+  .dyk-card{flex-direction:column;text-align:center}
 }
 @media (max-width:420px){
   body{padding:10px 10px 40px;font-size:16px}
@@ -270,6 +339,7 @@ footer a{color:inherit;font-weight:600}
     <span id="alertIcon" class="ai" aria-hidden="true">⚠️</span>
     <span id="alertText"></span>
   </div>
+  <div id="safety" class="hidden" aria-label="Friendly safety tips"></div>
 
   <main id="main">
 
@@ -285,15 +355,16 @@ footer a{color:inherit;font-weight:600}
       </div>
     </section>
 
-    <!-- ===== hero ===== -->
+    <!-- ===== hero: Sunny Bear ===== -->
     <section class="card hero" aria-live="polite">
       <div id="loading" class="loading hidden">
         <div class="spin" aria-hidden="true">☁️</div>
         <p id="loadingText">Asking the clouds...</p>
       </div>
       <div class="hero-left">
-        <div id="buddy" class="buddy" role="img" aria-label="Sunny Buddy, the weather friend"></div>
-        <p id="bubble" class="bubble">Hi! I am Sunny Buddy.</p>
+        <div id="bear" class="bear" role="img" aria-label="Sunny Bear, the weather bear"></div>
+        <p id="bubble" class="bubble">Hi! I am Sunny Bear.</p>
+        <p id="outfitLine" class="outfit-line"></p>
       </div>
       <div class="hero-right">
         <p id="dateLine" class="date">--</p>
@@ -307,7 +378,13 @@ footer a{color:inherit;font-weight:600}
           </div>
         </div>
         <p id="sunLine" class="sun-line"></p>
-        <button id="speakBtn" class="btn btn-fun" type="button">🔊 Read it to me</button>
+        <div class="audio-row">
+          <button id="speakBtn" class="btn btn-fun" type="button">🔊 Read it to me</button>
+          <button id="soundBtn" class="btn btn-sound" type="button" aria-pressed="false">🎵 Sounds: Off</button>
+          <label class="vol"><span class="sr">Sound volume</span><span aria-hidden="true">🔈</span>
+            <input id="vol" type="range" min="0" max="100" value="40"></label>
+        </div>
+        <p id="soundName" class="sound-name" aria-live="polite"></p>
       </div>
     </section>
 
@@ -320,28 +397,84 @@ footer a{color:inherit;font-weight:600}
       <div class="tile"><div class="ti" aria-hidden="true">🌿</div><div class="tl">Air</div><div id="tAir" class="tv">--</div><div id="nAir" class="tn"></div></div>
     </section>
 
+    <!-- ===== scenario: wear + do ===== -->
+    <section class="card sc" id="scCard" aria-label="What to wear and do">
+      <div class="sc-head">
+        <div id="scEmoji" class="sc-emoji" aria-hidden="true">🌤️</div>
+        <div>
+          <div id="scTitle" class="sc-title">Nice Day</div>
+          <div id="scTag" class="sc-tag"></div>
+        </div>
+        <span id="scFlag" class="sc-flag hidden">Trying on an outfit</span>
+      </div>
+      <div class="sc-try" role="group" aria-label="Dress up Sunny Bear">
+        <span class="lbl">🎩 Dress up Sunny Bear:</span>
+        <button type="button" data-sc="hot" aria-pressed="false">☀️ Hot</button>
+        <button type="button" data-sc="rainy" aria-pressed="false">🌧️ Rainy</button>
+        <button type="button" data-sc="cold" aria-pressed="false">❄️ Cold</button>
+        <button type="button" data-sc="windy" aria-pressed="false">💨 Windy</button>
+        <button type="button" data-sc="live" aria-pressed="true">📡 Today's weather</button>
+      </div>
+      <div class="sc-grid">
+        <div>
+          <h2>👕 What should I wear?</h2>
+          <div id="wear" class="wear"></div>
+        </div>
+        <div>
+          <h2>🎈 What can I do today?</h2>
+          <div id="tips" class="tips"></div>
+        </div>
+      </div>
+      <p id="scTip" class="sc-tip"></p>
+    </section>
+
     <!-- ===== hourly ===== -->
     <section class="card">
       <h2>🕒 Today's weather timeline</h2>
       <div id="hourly" class="hourly"></div>
     </section>
 
-    <!-- ===== wear + play ===== -->
-    <div class="two">
-      <section class="card">
-        <h2>👕 What should I wear?</h2>
-        <div id="wear" class="wear"></div>
-      </section>
-      <section class="card">
-        <h2>🎈 What can I do today?</h2>
-        <div id="tips" class="tips"></div>
-      </section>
-    </div>
-
     <!-- ===== 5 days ===== -->
     <section class="card">
       <h2>📅 The next 5 days</h2>
       <div id="days" class="days"></div>
+    </section>
+
+    <!-- ===== daily quiz ===== -->
+    <section class="card" id="quizCard">
+      <h2>🧠 Daily weather quiz</h2>
+      <div class="q-stats"><span id="qStreak">🔥 0 days in a row</span><span id="qStars">⭐ 0 stars</span></div>
+      <div id="quizBody" aria-live="polite"></div>
+    </section>
+
+    <!-- ===== badges ===== -->
+    <section class="card" id="badgeCard">
+      <h2>🏅 My badges</h2>
+      <p id="explored" class="explored"></p>
+      <div id="badges" class="badge-grid"></div>
+    </section>
+
+    <!-- ===== did you know ===== -->
+    <section class="card" id="dykCard">
+      <h2>💡 Did you know?</h2>
+      <div class="dyk-card">
+        <div id="dykEmoji" class="dyk-e" aria-hidden="true">💡</div>
+        <div><b id="dykTitle"></b><p id="dykText"></p></div>
+      </div>
+      <div class="dyk-actions">
+        <button id="dykRead" class="btn btn-fun" type="button">🔊 Read it</button>
+        <button id="dykNext" class="btn btn-primary" type="button">Next fact ➜</button>
+        <span id="dykCount" class="dyk-count"></span>
+      </div>
+    </section>
+
+    <!-- ===== world explorer ===== -->
+    <section class="card" id="worldCard">
+      <h2>🌍 Explore the world!</h2>
+      <p class="hint">Tap a landmark to fly there and see the weather. Slide the map sideways on a phone.</p>
+      <div class="world-wrap"><svg id="world" viewBox="0 0 1000 420" role="group" aria-label="World map with city landmarks"></svg></div>
+      <p id="worldCaption" class="world-caption" aria-live="polite"></p>
+      <div id="worldChips" class="chips" aria-label="City list"></div>
     </section>
 
     <!-- ===== chart ===== -->
@@ -350,7 +483,7 @@ footer a{color:inherit;font-weight:600}
       <div class="chart-box"><canvas id="chart" role="img" aria-label="Chart of temperature and rain chances for the next 24 hours"></canvas></div>
     </section>
 
-    <!-- ===== map ===== -->
+    <!-- ===== weather map ===== -->
     <section class="card" id="mapCard">
       <div class="map-head">
         <h2>🗺️ Weather map</h2>
@@ -363,16 +496,6 @@ footer a{color:inherit;font-weight:600}
       </div>
       <div id="map" aria-label="Weather map"></div>
       <p id="mapNote" class="map-note"></p>
-    </section>
-
-    <!-- ===== fun corner ===== -->
-    <section class="card">
-      <h2>🎉 Fun corner</h2>
-      <div class="fact"><span aria-hidden="true">💡</span> <b>Did you know?</b> <span id="factText"></span>
-        <div style="margin-top:10px"><button id="factBtn" class="btn btn-primary" type="button">Another fact!</button></div>
-      </div>
-      <p id="explored" class="explored"></p>
-      <div id="badges" class="badges"></div>
     </section>
   </main>
 
@@ -399,11 +522,12 @@ footer a{color:inherit;font-weight:600}
 const OWM_KEY = "";
 
 /* =========================================================
-   HELPERS
+   1. HELPERS + STATE
    ========================================================= */
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g,
   c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rand = (a, b) => a + Math.random() * (b - a);
 const reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const store = {
@@ -411,16 +535,52 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 };
 
+/* dates (device-local) */
+const pad = n => String(n).padStart(2, '0');
+const dayKey = (d) => { d = d || new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+const yesterdayKey = () => { const d = new Date(); d.setDate(d.getDate() - 1); return dayKey(d); };
+const dayNumber = () => { const d = new Date(); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5); };
+
+/* small seeded shuffle so the quiz answers move around, but stay the same all day */
+function seeded(seed) { let s = (seed >>> 0) || 1; return () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296; }
+function shuffledIdx(n, seed) {
+  const a = []; for (let i = 0; i < n; i++) a.push(i);
+  const r = seeded(seed);
+  for (let i = n - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+
+function defaultGame() {
+  return { correct: 0, answered: 0, streak: 0, best: 0, lastDate: '',
+    today: { date: '', pick: -1, right: false },
+    sunny: [], seen: { rain: false, snow: false, storm: false },
+    mapVisits: [], tried: [], voice: false, sound: false, badges: {} };
+}
+function loadGame() {
+  const d = defaultGame(), s = store.get('sb_game', {}) || {};
+  const g = Object.assign(d, s);
+  g.today = Object.assign({ date: '', pick: -1, right: false }, s.today || {});
+  g.seen = Object.assign({ rain: false, snow: false, storm: false }, s.seen || {});
+  g.badges = s.badges || {};
+  ['sunny', 'mapVisits', 'tried'].forEach(k => { if (!Array.isArray(g[k])) g[k] = []; });
+  return g;
+}
+
 const state = {
   unit: store.get('sb_unit', 'C'),
   fav: store.get('sb_fav', []),
   recent: store.get('sb_recent', []),
   visited: store.get('sb_visited', []),
   notify: store.get('sb_notify', false),
-  data: null, theme: '', layer: 'rain',
-  chart: null, map: null, marker: null, layerObj: null,
-  reqId: 0, speech: '', lastAlert: '', factIdx: -1
+  game: loadGame(),
+  data: null, reco: null, preview: null, theme: '',
+  layer: 'rain', chart: null, map: null, marker: null, layerObj: null,
+  reqId: 0, speech: '', lastAlert: '',
+  world: null, selCity: null,
+  dyk: { list: [], idx: 0, key: '' },
+  dismissed: new Set()
 };
+const saveGame = () => store.set('sb_game', state.game);
 
 const placeKey = p => Number(p.lat).toFixed(2) + ',' + Number(p.lon).toFixed(2);
 const placeLabel = p => [p.name, p.region, p.country].filter(Boolean).join(', ');
@@ -443,18 +603,17 @@ async function getJSON(url, timeout) {
   } finally { clearTimeout(id); }
 }
 
-/* ---------- units & formatting ---------- */
+/* units & formatting */
 const cvt = c => state.unit === 'C' ? Math.round(c) : Math.round(c * 9 / 5 + 32);
 const deg = c => cvt(c) + '°';
 const windConv = k => state.unit === 'C' ? Math.round(k) : Math.round(k * 0.621371);
 const windUnit = () => state.unit === 'C' ? 'km/h' : 'mph';
-// API times are the city's own wall-clock time, so we display them as-is.
-const dt = s => new Date(s);
+const dt = s => new Date(s);   // API times are the city's own wall-clock time - shown as-is
 const fmtTime = s => dt(s).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 const fmtHour = s => dt(s).toLocaleTimeString([], { hour: 'numeric' });
 
 /* =========================================================
-   WEATHER DATA (Open-Meteo - free, no key)
+   2. WEATHER DATA (Open-Meteo - free, no key)
    ========================================================= */
 const API = {
   async suggest(q) {
@@ -479,6 +638,12 @@ const API = {
   air(lat, lon) {
     return getJSON('https://air-quality-api.open-meteo.com/v1/air-quality?latitude=' + lat +
       '&longitude=' + lon + '&current=us_aqi');
+  },
+  /* one request for all world-map cities */
+  worldNow(cities) {
+    return getJSON('https://api.open-meteo.com/v1/forecast?latitude=' + cities.map(c => c.lat).join(',') +
+      '&longitude=' + cities.map(c => c.lon).join(',') +
+      '&current=temperature_2m,weather_code,is_day&timezone=auto');
   }
 };
 
@@ -531,24 +696,205 @@ function wxInfo(code, day) {
   if (w[1] === 'rain' && day && LIGHT_RAIN.indexOf(code) > -1) emoji = '🌦️';
   return { text: w[0], kind: w[1], emoji };
 }
-
-const BUDDY_SAY = {
-  sun:'What a bright and sunny day!', moon:'The moon is out. What a calm night!',
-  partly:'A little sunshine and a few fluffy clouds.', cloud:'Fluffy clouds are covering the sky today.',
-  fog:'It is foggy out. Everything looks mysterious!', rain:'Rain is falling. Time for boots and an umbrella!',
-  storm:'Thunder is rumbling. Let us stay safe inside!', snow:'Snowflakes are falling. It is a winter wonderland!'
-};
-const buddyKindOf = (kind, day) =>
-  kind === 'clear' ? (day ? 'sun' : 'moon') : kind === 'partly' ? (day ? 'partly' : 'cloud') : kind;
-
 function themeOf(kind, day) {
   if (!day && ['clear', 'partly', 'cloud', 'fog'].indexOf(kind) > -1) return 'night';
   return { clear:'sunny', partly:'sunny', cloud:'cloudy', fog:'fog', rain:'rain', snow:'snow', storm:'storm' }[kind];
 }
 
 /* =========================================================
-   KID ADVICE
+   3. RECOMMENDATION ENGINE  (JSON data + rules)
+   ---------------------------------------------------------
+   SCENARIOS is plain JSON. Each scenario says what Sunny Bear
+   wears (bear layers), what a child should wear, what to do,
+   and one gentle safety tip. pickScenario() chooses one from
+   temperature, rain, wind and UV; buildReco() then applies
+   small "modifiers" (storm, snow, night, bad air, high UV).
    ========================================================= */
+const SCENARIOS = {
+  hot: {
+    id: 'hot', emoji: '☀️', title: 'Sunny & Hot', color: '#ff922b',
+    tagline: 'Bright sun and warm air. Stay cool and stay safe!',
+    bear: ['tee', 'shorts', 'sunglasses', 'sunhat'],
+    wear: [
+      { e: '👕', l: 'Light T-shirt' }, { e: '🩳', l: 'Shorts' }, { e: '🧢', l: 'Sun hat' },
+      { e: '🕶️', l: 'Sunglasses' }, { e: '🧴', l: 'Sunscreen' }, { e: '💧', l: 'Water bottle' }
+    ],
+    todo: [
+      { e: '💦', t: 'Splash time', x: 'Play with a sprinkler or swim with a grown-up.' },
+      { e: '🌳', t: 'Shady picnic', x: 'Eat a snack under a big tree.' },
+      { e: '🍉', t: 'Cool snacks', x: 'Juicy fruit like watermelon keeps you cool.' },
+      { e: '🎨', t: 'Chalk art', x: 'Draw a giant picture outside in the morning or evening.' }
+    ],
+    tip: "Don't forget your sun hat and water bottle!"
+  },
+  rainy: {
+    id: 'rainy', emoji: '🌧️', title: 'Rainy Day', color: '#4dabf7',
+    tagline: 'Drip, drop! Stay dry and splash safely.',
+    bear: ['raincoat', 'hood', 'boots', 'umbrella'],
+    wear: [
+      { e: '☔', l: 'Umbrella' }, { e: '🧥', l: 'Raincoat' }, { e: '🥾', l: 'Rain boots' }, { e: '🧦', l: 'Dry socks' }
+    ],
+    todo: [
+      { e: '🥾', t: 'Puddle jumping', x: 'Splash in small puddles. Stay away from deep water.' },
+      { e: '🎲', t: 'Board game time', x: 'Play a game with your family.' },
+      { e: '🍪', t: 'Bake a treat', x: 'Bake cookies with a grown-up.' },
+      { e: '🌈', t: 'Rainbow hunt', x: 'When the rain stops and the sun peeks out, look for a rainbow!' }
+    ],
+    tip: 'Stay out of deep water and streams when it rains a lot.'
+  },
+  cold: {
+    id: 'cold', emoji: '❄️', title: 'Cold Day', color: '#3b82f6',
+    tagline: 'Brrr! Bundle up warm and cozy.',
+    bear: ['jacket', 'beanie', 'scarf', 'mittens'],
+    wear: [
+      { e: '🧥', l: 'Winter jacket' }, { e: '🧶', l: 'Warm beanie' }, { e: '🧣', l: 'Scarf' },
+      { e: '🧤', l: 'Mittens' }, { e: '🧦', l: 'Warm socks' }, { e: '🥾', l: 'Boots' }
+    ],
+    todo: [
+      { e: '🏃', t: 'Run and warm up', x: 'Play tag to get your body warm.' },
+      { e: '🧩', t: 'Puzzle time', x: 'Build a big puzzle indoors.' },
+      { e: '🍲', t: 'Warm soup', x: 'A warm bowl of soup feels great on a cold day.' },
+      { e: '📚', t: 'Cozy reading', x: 'Grab a blanket and a good book.' }
+    ],
+    tip: 'Come inside to warm up if your fingers or toes feel numb.'
+  },
+  windy: {
+    id: 'windy', emoji: '💨', title: 'Windy Day', color: '#40c057',
+    tagline: 'Whoosh! Hold on to your hat.',
+    bear: ['windbreaker', 'scarf', 'kite'],
+    wear: [
+      { e: '🧥', l: 'Windbreaker' }, { e: '🧣', l: 'Scarf' }, { e: '👟', l: 'Sturdy shoes' }, { e: '👖', l: 'Long pants' }
+    ],
+    todo: [
+      { e: '🪁', t: 'Fly a kite', x: 'Find a wide open space, far from power lines and roads.' },
+      { e: '🌀', t: 'Pinwheel fun', x: 'Make a paper pinwheel and watch it spin.' },
+      { e: '🍃', t: 'Leaf watch', x: 'Watch the leaves dance in the wind.' },
+      { e: '🎈', t: 'Wind test', x: 'Which things does the wind move? Which stay still?' }
+    ],
+    tip: 'Stay away from tall trees and flying things when the wind is strong.'
+  },
+  mild: {
+    id: 'mild', emoji: '🌤️', title: 'Nice Day', color: '#2f9e44',
+    tagline: 'Comfy weather. A great day to play!',
+    bear: ['tee'],
+    wear: [
+      { e: '👕', l: 'T-shirt' }, { e: '👖', l: 'Comfy pants' }, { e: '🧥', l: 'Light jacket' }, { e: '👟', l: 'Sneakers' }
+    ],
+    todo: [
+      { e: '🛝', t: 'Park time', x: 'Play on the swings and slides.' },
+      { e: '🚲', t: 'Bike ride', x: 'Wear your helmet and ride with a grown-up.' },
+      { e: '⚽', t: 'Ball game', x: 'Kick a ball with your friends.' },
+      { e: '🌼', t: 'Nature walk', x: 'Look for bugs, flowers and birds.' }
+    ],
+    tip: 'Drink water and stay close to a grown-up.'
+  }
+};
+const MODS = {
+  storm: {
+    wear: [{ e: '🏠', l: 'Stay inside' }, { e: '🧥', l: 'Raincoat' }, { e: '🥾', l: 'Rain boots' }],
+    todo: [
+      { e: '🏠', t: 'Indoor day!', x: 'Thunder is loud today. Build a blanket fort or play a board game.' },
+      { e: '📚', t: 'Story time', x: 'Read a book or listen to a story.' },
+      { e: '🎨', t: 'Art corner', x: 'Draw storm clouds and lightning from the window.' },
+      { e: '🔦', t: 'Shadow puppets', x: 'Make shadow animals with a flashlight.' }
+    ]
+  },
+  snow: {
+    todo: [
+      { e: '⛄', t: 'Build a snowman', x: 'Roll big snowballs and add a carrot nose.' },
+      { e: '👼', t: 'Snow angels', x: 'Lie down in the snow and wave your arms and legs.' },
+      { e: '🛷', t: 'Sledding', x: 'Ask a grown-up to find a safe, gentle hill.' },
+      { e: '🍲', t: 'Warm-up time', x: 'Come inside to warm up when you feel cold.' }
+    ]
+  },
+  night: { todo: [{ e: '🔭', t: 'Star time', x: 'Look up! On a clear night you may spot the moon and stars.' }] },
+  air:   { todo: [{ e: '🌫️', t: 'Air check', x: 'The air is not very clean today. Play inside or take it easy.' }] }
+};
+
+function pickScenario(d) {
+  const k = wxInfo(d.code, d.day).kind;
+  const rainSoon = d.hours.slice(0, 3).some(h => h.pop >= 70);
+  if (k === 'rain' || k === 'storm' || rainSoon) return 'rainy';
+  if (k === 'snow' || d.feels <= 10) return 'cold';
+  if (d.wind >= 30) return 'windy';
+  if (d.feels >= 28 || (d.day && d.uv >= 6 && d.feels >= 22)) return 'hot';
+  return 'mild';
+}
+
+function safetyNotes(d) {
+  const n = [];
+  if (d.day && d.uv >= 5) n.push({ id: 'uv', e: '🧴', x: d.uv >= 8
+    ? "The sun is very strong! Stay in the shade at noon, and don't forget your sun hat and water bottle!"
+    : "The sun is strong today. Don't forget your sun hat and water bottle!" });
+  if (d.feels >= 40) n.push({ id: 'heat', e: '🥵', x: 'It is extremely hot! Stay inside where it is cool, drink water, and tell a grown-up if you feel dizzy.' });
+  else if (d.feels >= 35) n.push({ id: 'heat', e: '🥵', x: 'It is very hot! Drink water often and rest in the shade. Never stay in a parked car.' });
+  if (d.feels <= 0) n.push({ id: 'cold', e: '🥶', x: 'Brrr, it is freezing! Wear your coat, hat and mittens, and come inside if your fingers feel numb.' });
+  return n;
+}
+
+function buildReco(d) {
+  const info = wxInfo(d.code, d.day), k = info.kind;
+  const id = pickScenario(d), b = SCENARIOS[id];
+  const r = { id, emoji: b.emoji, title: b.title, tagline: b.tagline, color: b.color,
+              bear: b.bear.slice(), wear: b.wear.slice(), todo: b.todo.slice(), tip: b.tip };
+  const addWear = (e, l) => { if (!r.wear.some(x => x.l === l)) r.wear.push({ e, l }); };
+  const addBear = l => { if (r.bear.indexOf(l) < 0) r.bear.push(l); };
+  const dropBear = (...l) => { r.bear = r.bear.filter(x => l.indexOf(x) < 0); };
+  const dropWear = (...l) => { r.wear = r.wear.filter(x => l.indexOf(x.l) < 0); };
+
+  if (k === 'storm') {
+    Object.assign(r, { emoji: '⛈️', title: 'Stormy Day', color: '#7950f2', tagline: 'Thunder is rumbling. Stay safe inside!',
+                       tip: 'Stay inside until the storm has passed, and stay away from windows.' });
+    r.wear = MODS.storm.wear.slice(); r.todo = MODS.storm.todo.slice(); dropBear('umbrella');
+  } else if (k === 'snow') {
+    Object.assign(r, { emoji: '⛄', title: 'Snowy Day', color: '#74c0fc', tagline: 'Snow is falling. Bundle up and have fun!' });
+    r.todo = MODS.snow.todo.slice();
+  }
+  if (id === 'rainy' && k !== 'storm' && d.feels <= 12) { addWear('🧣', 'Scarf'); addBear('scarf'); }
+
+  const sunny = d.day && (d.uv >= 5 || d.feels >= 32);
+  if (id === 'hot') {
+    if (d.feels < 28) { r.title = 'Bright & Sunny'; r.tagline = 'The sun is out! Enjoy it and stay protected.'; }
+    if (!sunny) { dropBear('sunglasses', 'sunhat'); dropWear('Sun hat', 'Sunglasses'); }
+  }
+  if (d.day && d.uv >= 5) {
+    addWear('🧴', 'Sunscreen');
+    if (id !== 'rainy' && id !== 'cold') addBear('sunglasses');
+    if (id === 'mild') { addWear('🧢', 'Sun hat'); addBear('sunhat'); }
+  }
+  if (!d.day) {
+    dropBear('sunglasses', 'sunhat'); dropWear('Sun hat', 'Sunglasses', 'Sunscreen');
+    if (k === 'clear' || k === 'partly') r.todo.unshift(MODS.night.todo[0]);
+  }
+  if (d.aqi != null && d.aqi > 100) r.todo.unshift(MODS.air.todo[0]);
+
+  r.wear = r.wear.slice(0, 8);
+  r.todo = r.todo.slice(0, 4);
+  const notes = safetyNotes(d);
+  if (notes.length) r.tip = notes[0].x;
+  return r;
+}
+function previewReco(id) {
+  const b = SCENARIOS[id];
+  return { id, emoji: b.emoji, title: b.title, tagline: b.tagline, color: b.color,
+           bear: b.bear.slice(), wear: b.wear.slice(), todo: b.todo.slice(), tip: b.tip, preview: true };
+}
+
+/* severe alerts (red banner) */
+function getAlert(d) {
+  const k = wxInfo(d.code, d.day).kind;
+  if (k === 'storm') return { icon: '⛈️', text: 'Thunderstorm outside! Stay indoors and ask a grown-up before going out.' };
+  if (d.hours.slice(0, 6).some(h => wxInfo(h.code, h.day).kind === 'storm'))
+    return { icon: '⛈️', text: 'A thunderstorm may arrive later today. Ask a grown-up about your plans.' };
+  if ([55, 65, 67, 82].indexOf(d.code) > -1) return { icon: '🌧️', text: 'Heavy rain today! Stay dry and keep away from streams and flooded roads.' };
+  if ([75, 86].indexOf(d.code) > -1) return { icon: '🌨️', text: 'Heavy snow today! Dress warmly and stay with a grown-up.' };
+  if (d.wind >= 50) return { icon: '💨', text: 'Very strong wind today! Stay away from trees and stay inside if you can.' };
+  if (d.feels <= -10) return { icon: '🥶', text: 'It is dangerously cold! Stay inside or bundle up very well.' };
+  if (d.aqi != null && d.aqi > 150) return { icon: '😷', text: 'The air is not clean today. Play indoors and ask a grown-up about a mask.' };
+  return null;
+}
+
+/* tile notes */
 const windNote = k => k < 6 ? 'Very calm' : k < 20 ? 'Gentle breeze' : k < 40 ? 'Windy! Great for kites' : k < 60 ? 'Very windy. Hold your hat!' : 'Super strong wind!';
 const uvNote = u => u < 3 ? 'Gentle sun' : u < 6 ? 'Medium. Wear a hat' : u < 8 ? 'Strong. Use sunscreen' : 'Very strong. Stay in shade';
 const humNote = h => h < 30 ? 'Dry air' : h < 60 ? 'Comfy air' : h < 80 ? 'A bit sticky' : 'Very damp';
@@ -562,157 +908,137 @@ function airInfo(a) {
   return { v: 'Very yucky', n: 'Stay inside today' };
 }
 
-function wearList(d) {
-  const f = d.feels, kind = wxInfo(d.code, d.day).kind, items = [];
-  const add = (e, l) => { if (!items.some(i => i.l === l)) items.push({ e, l }); };
-  if (f >= 32) { add('👕','Light T-shirt'); add('🩳','Shorts'); add('🧢','Sun hat'); add('🕶️','Sunglasses'); add('💧','Water bottle'); }
-  else if (f >= 24) { add('👕','T-shirt'); add('🩳','Shorts'); add('🧢','Cap'); }
-  else if (f >= 16) { add('👕','T-shirt'); add('👖','Comfy pants'); add('🧥','Light jacket'); }
-  else if (f >= 8) { add('🧥','Warm jacket'); add('👖','Long pants'); add('👟','Closed shoes'); }
-  else if (f >= 0) { add('🧥','Thick coat'); add('🧣','Scarf'); add('🧤','Gloves'); add('🧦','Warm socks'); }
-  else { add('🧥','Big winter coat'); add('🧣','Scarf'); add('🧤','Gloves'); add('🧦','Warm socks'); add('🥾','Snow boots'); }
-  const rainSoon = d.hours.slice(0, 8).some(h => h.pop >= 50);
-  if (kind === 'rain' || kind === 'storm' || rainSoon) { add('☔','Umbrella'); add('🥾','Rain boots'); }
-  if (kind === 'snow') { add('🥾','Snow boots'); add('🧤','Gloves'); add('🧢','Warm hat'); }
-  if (d.uv >= 6 && d.day) { add('🧴','Sunscreen'); add('🧢','Sun hat'); }
-  if (d.wind >= 35) add('🧥','Windproof jacket');
-  return items.slice(0, 8);
-}
-
-function tipList(d) {
-  const info = wxInfo(d.code, d.day), k = info.kind, tips = [];
-  const add = (e, t, x) => tips.push({ e, t, x });
-  const badAir = d.aqi != null && d.aqi > 100;
-  const soonRain = d.hours.slice(0, 6).some(h => h.pop >= 60);
-  if (k === 'storm') add('🏠','Indoor day!','Thunder is loud today. Build a blanket fort, read a book, or play a board game.');
-  else if (k === 'rain') {
-    if (LIGHT_RAIN.indexOf(d.code) > -1) add('☔','Puddle time','Put on rain boots and splash in the puddles. Stay away from deep water.');
-    else add('🎨','Cozy inside','The rain is heavy. Draw, do a puzzle, or bake something yummy with a grown-up.');
-  }
-  else if (k === 'snow') add('⛄','Snow day!','Build a snowman and make snow angels. Wear gloves and come in when you feel cold.');
-  else if (k === 'fog') add('🚲','Foggy day','Stay close to grown-ups and wear bright colors so people can see you.');
-  else if (d.day && d.feels >= 15 && d.feels <= 32 && d.wind < 25 && !badAir && !soonRain)
-    add('🛝','Perfect for the park','A great time to play outside, ride a bike, or kick a ball.');
-  if (d.wind >= 15 && d.wind <= 40 && k !== 'storm' && k !== 'rain' && d.day)
-    add('🪁','Kite day','A nice breeze for flying a kite. Use a wide, open space far from power lines.');
-  if (!d.day && (k === 'clear' || k === 'partly'))
-    add('🔭','Star time','Look up! If the sky is dark and clear, you might spot the moon and stars.');
-  if (d.feels >= 30) add('💧','Drink water','It is warm. Drink lots of water and rest in the shade.');
-  if (d.uv >= 6 && d.day) add('🧴','Sun safety','The sun is strong. Ask a grown-up to help with sunscreen and wear a hat.');
-  if (d.feels <= 5) add('🧣','Bundle up','It is chilly. Layers keep you warm, and hot cocoa helps too.');
-  if (badAir) add('🌫️','Air check','The air is not very clean today. Play indoors or take it easy outside.');
-  if (!tips.length) add('😊','Have a great day!','Ask a grown-up what fun things you can do today.');
-  return tips.slice(0, 4);
-}
-
-function getAlert(d) {
-  const k = wxInfo(d.code, d.day).kind;
-  if (k === 'storm') return { icon:'⛈️', text:'Thunderstorm outside! Stay indoors and ask a grown-up before going out.' };
-  if (d.hours.slice(0, 6).some(h => wxInfo(h.code, h.day).kind === 'storm'))
-    return { icon:'⛈️', text:'A thunderstorm may arrive later today. Ask a grown-up about your plans.' };
-  if ([55, 65, 67, 82].indexOf(d.code) > -1) return { icon:'🌧️', text:'Heavy rain today! Stay dry and keep away from streams and flooded roads.' };
-  if ([75, 86].indexOf(d.code) > -1) return { icon:'🌨️', text:'Heavy snow today! Dress warmly and stay with a grown-up.' };
-  if (d.wind >= 50) return { icon:'💨', text:'Very strong wind today! Stay away from trees and stay inside if you can.' };
-  if (d.feels >= 40) return { icon:'🥵', text:'It is extremely hot! Stay in the shade, drink water, and rest often.' };
-  if (d.feels <= -10) return { icon:'🥶', text:'It is freezing cold! Stay inside or bundle up very well.' };
-  if (d.aqi != null && d.aqi > 150) return { icon:'😷', text:'The air is not clean today. Play indoors and ask a grown-up about a mask.' };
-  if (d.uv >= 8 && d.day) return { icon:'☀️', text:'The sun is very strong! Wear sunscreen and a hat, and rest in the shade.' };
-  return null;
-}
-
-const FACTS = [
-  'A rainbow is really a full circle! From the ground we usually see only the top half.',
-  'Lightning is much hotter than the surface of the Sun.',
-  'Snow crystals grow with six sides or six arms.',
-  'A fluffy cloud can weigh as much as dozens of elephants.',
-  'Small raindrops are round, and bigger ones are shaped like little hamburger buns.',
-  'Wind is just moving air. It moves because the Sun warms some places more than others.',
-  'Thunder is the sound lightning makes when it heats the air super fast.',
-  'Count the seconds between lightning and thunder. Every 3 seconds is about 1 kilometer away.',
-  'The Sun is a star, and its light takes about 8 minutes to reach Earth.',
-  'Fog is a cloud that touches the ground.',
-  'Hurricanes, typhoons and cyclones are the same kind of storm with different names in different places.',
-  'Hot air rises, which is why hot air balloons float up.'
-];
-const BADGES = [
-  { n:1, e:'🌱', t:'Weather Rookie' }, { n:3, e:'🧭', t:'Weather Explorer' },
-  { n:6, e:'🧙', t:'Weather Wizard' }, { n:12, e:'🏆', t:'Sky Champion' }
-];
-
 /* =========================================================
-   BUDDY (the mascot)
+   4. SUNNY BEAR - layered SVG + dressing logic
+   ---------------------------------------------------------
+   Every piece of clothing is a <g class="layer" data-layer="...">.
+   Bear.dress(['raincoat','hood','boots']) just switches the
+   ".on" class, so CSS animates the outfit in and out.
+   Some clothes have 2 groups (body part + sleeves) so they
+   sit at the right depth (sleeves in front of the arms).
    ========================================================= */
-function buddySVG(kind) {
-  const S = '<circle cx="66" cy="112" r="30"/><circle cx="102" cy="90" r="40"/><circle cx="140" cy="110" r="32"/><rect x="36" y="112" width="138" height="34" rx="17"/>';
-  const cloud = (fill, stroke) =>
-    '<g fill="' + stroke + '" stroke="' + stroke + '" stroke-width="8" stroke-linejoin="round">' + S + '</g><g fill="' + fill + '">' + S + '</g>';
-  const eyes = (x, y) =>
-    '<g class="eyes"><ellipse cx="' + (x-18) + '" cy="' + (y-6) + '" rx="6" ry="8" fill="#1f2a44"/><ellipse cx="' + (x+18) + '" cy="' + (y-6) + '" rx="6" ry="8" fill="#1f2a44"/>' +
-    '<circle cx="' + (x-16) + '" cy="' + (y-9) + '" r="2.2" fill="#fff"/><circle cx="' + (x+20) + '" cy="' + (y-9) + '" r="2.2" fill="#fff"/></g>' +
-    '<circle cx="' + (x-32) + '" cy="' + (y+8) + '" r="7" fill="#ff8fa3" opacity=".55"/><circle cx="' + (x+32) + '" cy="' + (y+8) + '" r="7" fill="#ff8fa3" opacity=".55"/>';
-  const smile = (x, y) => '<path d="M' + (x-12) + ' ' + (y+8) + ' Q' + x + ' ' + (y+24) + ' ' + (x+12) + ' ' + (y+8) + '" stroke="#1f2a44" stroke-width="4" fill="none" stroke-linecap="round"/>';
-  const calm = (x, y) => '<path d="M' + (x-8) + ' ' + (y+12) + ' Q' + x + ' ' + (y+19) + ' ' + (x+8) + ' ' + (y+12) + '" stroke="#1f2a44" stroke-width="4" fill="none" stroke-linecap="round"/>';
-  const wow = (x, y) => '<ellipse cx="' + x + '" cy="' + (y+15) + '" rx="7" ry="9" fill="#1f2a44"/>';
-  const rays = (cx, cy, r1, r2) => {
-    let s = '';
-    for (let i = 0; i < 12; i++) {
-      const a = i * Math.PI / 6;
-      s += '<line x1="' + (cx + Math.cos(a) * r1).toFixed(1) + '" y1="' + (cy + Math.sin(a) * r1).toFixed(1) +
-           '" x2="' + (cx + Math.cos(a) * r2).toFixed(1) + '" y2="' + (cy + Math.sin(a) * r2).toFixed(1) + '"/>';
+const LAYER_NAMES = { tee:'T-shirt', shorts:'shorts', sunglasses:'sunglasses', sunhat:'sun hat', raincoat:'raincoat',
+  boots:'rain boots', umbrella:'umbrella', jacket:'winter jacket', beanie:'beanie', scarf:'scarf',
+  mittens:'mittens', windbreaker:'windbreaker', kite:'kite' };
+const joinList = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+const outfitText = layers => { const n = layers.map(l => LAYER_NAMES[l]).filter(Boolean); return n.length ? joinList(n) : 'just my fur'; };
+
+const Bear = {
+  el: null, key: '',
+  svg() {
+    const brown = '#c98a4b', dark = '#a8672f', tan = '#f2c48f', ink = '#1f2a44';
+    const L = (name, inner) => '<g class="layer" data-layer="' + name + '">' + inner + '</g>';
+    const sleeves = (fill, stroke) =>
+      '<ellipse cx="62" cy="212" rx="19" ry="36" transform="rotate(18 62 212)" fill="' + fill + '" stroke="' + stroke + '" stroke-width="4"/>' +
+      '<ellipse cx="178" cy="212" rx="19" ry="36" transform="rotate(-18 178 212)" fill="' + fill + '" stroke="' + stroke + '" stroke-width="4"/>';
+    const collar = (fill, stroke) => '<path d="M76 152 Q120 180 164 152 L170 176 Q120 198 70 176Z" fill="' + fill + '" stroke="' + stroke + '" stroke-width="3" stroke-linejoin="round"/>';
+
+    return '<svg viewBox="-20 -50 280 370" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g class="wig">' +
+
+    /* --- behind the bear --- */
+    L('umbrella',
+      '<line x1="150" y1="24" x2="187" y2="240" stroke="#6b4a2a" stroke-width="6" stroke-linecap="round"/>' +
+      '<path d="M64 26 Q150 -70 236 26 Q215 12 193 26 Q172 12 150 26 Q128 12 107 26 Q85 12 64 26Z" fill="#ff6b9d" stroke="#e64980" stroke-width="4" stroke-linejoin="round"/>' +
+      '<path d="M150 -22 Q118 4 107 26 M150 -22 Q182 4 193 26" fill="none" stroke="#e64980" stroke-width="3"/>') +
+    L('kite',
+      '<line x1="10" y1="34" x2="50" y2="246" stroke="#868e96" stroke-width="2"/>' +
+      '<g class="kite-sway"><polygon points="10,-34 36,-6 10,34 -16,-6" fill="#ff6b9d" stroke="#e64980" stroke-width="3" stroke-linejoin="round"/>' +
+      '<path d="M10 -34 L10 34 M-16 -6 L36 -6" stroke="#fff" stroke-width="2"/>' +
+      '<path d="M10 34 q-10 12 0 22 t0 22" fill="none" stroke="#ffd43b" stroke-width="4" stroke-dasharray="6 5"/></g>') +
+
+    /* --- body --- */
+    '<ellipse cx="120" cy="225" rx="58" ry="64" fill="' + brown + '"/>' +
+    '<ellipse cx="120" cy="232" rx="38" ry="44" fill="' + tan + '"/>' +
+    L('shorts',
+      '<path d="M68 256 Q120 274 172 256 L176 284 Q120 296 64 284Z" fill="#ffa94d" stroke="#f76707" stroke-width="3" stroke-linejoin="round"/>' +
+      '<path d="M120 268 V292" stroke="#f76707" stroke-width="3"/>') +
+    /* feet */
+    '<ellipse cx="88" cy="292" rx="24" ry="17" fill="' + brown + '"/><ellipse cx="88" cy="294" rx="10" ry="7" fill="' + tan + '"/>' +
+    '<ellipse cx="152" cy="292" rx="24" ry="17" fill="' + brown + '"/><ellipse cx="152" cy="294" rx="10" ry="7" fill="' + tan + '"/>' +
+    L('boots',
+      '<ellipse cx="88" cy="294" rx="26" ry="19" fill="#2f9e44" stroke="#2b8a3e" stroke-width="3"/><rect x="68" y="266" width="40" height="18" rx="8" fill="#37b24d" stroke="#2b8a3e" stroke-width="3"/>' +
+      '<ellipse cx="152" cy="294" rx="26" ry="19" fill="#2f9e44" stroke="#2b8a3e" stroke-width="3"/><rect x="132" y="266" width="40" height="18" rx="8" fill="#37b24d" stroke="#2b8a3e" stroke-width="3"/>') +
+
+    /* --- clothes on the torso --- */
+    L('tee',
+      '<path d="M76 178 Q120 166 164 178 L172 262 Q120 276 68 262Z" fill="#4dabf7" stroke="#1c7ed6" stroke-width="4" stroke-linejoin="round"/>' +
+      '<text x="120" y="234" text-anchor="middle" font-size="28">⭐</text>') +
+    L('windbreaker',
+      '<path d="M62 176 Q120 158 178 176 L188 270 Q120 288 52 270Z" fill="#51cf66" stroke="#2f9e44" stroke-width="4" stroke-linejoin="round"/>' +
+      '<path d="M72 190 L64 266 M168 190 L176 266" stroke="#fff" stroke-width="5" stroke-linecap="round"/>' +
+      '<path d="M120 178 V284" stroke="#2f9e44" stroke-width="3"/>' + collar('#40c057', '#2f9e44')) +
+    L('jacket',
+      '<path d="M62 176 Q120 158 178 176 L188 270 Q120 288 52 270Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="4" stroke-linejoin="round"/>' +
+      '<path d="M58 206 Q120 222 182 206 M56 238 Q120 254 184 238" fill="none" stroke="#1d4ed8" stroke-width="3"/>' +
+      '<path d="M120 178 V284" stroke="#dbe4ff" stroke-width="3"/>' + collar('#2563eb', '#1d4ed8')) +
+    L('raincoat',
+      '<path d="M60 176 Q120 158 180 176 L190 274 Q120 292 50 274Z" fill="#ffd43b" stroke="#f59f00" stroke-width="4" stroke-linejoin="round"/>' +
+      '<path d="M120 180 V284" stroke="#f59f00" stroke-width="3"/>' +
+      '<circle cx="120" cy="205" r="5" fill="#f59f00"/><circle cx="120" cy="232" r="5" fill="#f59f00"/><circle cx="120" cy="259" r="5" fill="#f59f00"/>' +
+      collar('#fcc419', '#f59f00')) +
+
+    /* --- arms, then sleeves on top of the arms --- */
+    '<ellipse cx="62" cy="212" rx="16" ry="34" transform="rotate(18 62 212)" fill="' + brown + '"/>' +
+    '<ellipse cx="178" cy="212" rx="16" ry="34" transform="rotate(-18 178 212)" fill="' + brown + '"/>' +
+    L('tee', '<ellipse cx="66" cy="192" rx="18" ry="15" transform="rotate(18 66 192)" fill="#4dabf7" stroke="#1c7ed6" stroke-width="4"/>' +
+             '<ellipse cx="174" cy="192" rx="18" ry="15" transform="rotate(-18 174 192)" fill="#4dabf7" stroke="#1c7ed6" stroke-width="4"/>') +
+    L('windbreaker', sleeves('#51cf66', '#2f9e44')) +
+    L('jacket', sleeves('#3b82f6', '#1d4ed8')) +
+    L('raincoat', sleeves('#ffd43b', '#f59f00')) +
+    '<circle cx="51" cy="246" r="13" fill="' + brown + '"/><circle cx="189" cy="246" r="13" fill="' + brown + '"/>' +
+    L('mittens',
+      '<circle cx="51" cy="246" r="15" fill="#ffa94d" stroke="#f76707" stroke-width="3"/><circle cx="38" cy="237" r="7" fill="#ffa94d" stroke="#f76707" stroke-width="3"/>' +
+      '<circle cx="189" cy="246" r="15" fill="#ffa94d" stroke="#f76707" stroke-width="3"/><circle cx="202" cy="237" r="7" fill="#ffa94d" stroke="#f76707" stroke-width="3"/>') +
+
+    /* --- head --- */
+    '<circle cx="80" cy="52" r="22" fill="' + brown + '"/><circle cx="80" cy="52" r="12" fill="' + tan + '"/>' +
+    '<circle cx="160" cy="52" r="22" fill="' + brown + '"/><circle cx="160" cy="52" r="12" fill="' + tan + '"/>' +
+    '<circle cx="120" cy="100" r="62" fill="' + brown + '"/>' +
+    '<ellipse cx="120" cy="120" rx="28" ry="22" fill="' + tan + '"/>' +
+    '<ellipse cx="120" cy="108" rx="9" ry="6" fill="#4a2c1a"/>' +
+    '<path d="M120 114 V124 M108 124 Q120 134 132 124" fill="none" stroke="#4a2c1a" stroke-width="3.5" stroke-linecap="round"/>' +
+    '<g class="eyes"><circle cx="96" cy="88" r="6.5" fill="' + ink + '"/><circle cx="144" cy="88" r="6.5" fill="' + ink + '"/>' +
+    '<circle cx="98" cy="86" r="2.2" fill="#fff"/><circle cx="146" cy="86" r="2.2" fill="#fff"/></g>' +
+    '<circle cx="78" cy="112" r="8" fill="#ff8fa3" opacity=".55"/><circle cx="162" cy="112" r="8" fill="#ff8fa3" opacity=".55"/>' +
+
+    /* --- on top of the head --- */
+    L('scarf',
+      '<path d="M72 152 Q120 176 168 152 L172 172 Q120 196 68 172Z" fill="#ff6b6b" stroke="#e03131" stroke-width="3" stroke-linejoin="round"/>' +
+      '<g class="flutter"><path d="M146 176 L166 176 L170 232 Q157 242 144 232Z" fill="#ff6b6b" stroke="#e03131" stroke-width="3" stroke-linejoin="round"/>' +
+      '<path d="M146 200 H168 M146 214 H169" stroke="#fff" stroke-width="3"/></g>') +
+    L('sunglasses',
+      '<rect x="80" y="80" width="32" height="22" rx="9" fill="' + ink + '"/><rect x="128" y="80" width="32" height="22" rx="9" fill="' + ink + '"/>' +
+      '<rect x="110" y="86" width="20" height="5" fill="' + ink + '"/><path d="M80 88 L64 84 M160 88 L176 84" stroke="' + ink + '" stroke-width="4" stroke-linecap="round"/>' +
+      '<path d="M86 86 L94 86 M134 86 L142 86" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"/>') +
+    L('hood',
+      '<path d="M52 104 Q46 16 120 14 Q194 16 188 104 Q172 64 120 60 Q68 64 52 104Z" fill="#ffd43b" stroke="#f59f00" stroke-width="4" stroke-linejoin="round"/>') +
+    L('beanie',
+      '<path d="M62 76 Q60 14 120 12 Q180 14 178 76 Q120 62 62 76Z" fill="#e03131" stroke="#c92a2a" stroke-width="3" stroke-linejoin="round"/>' +
+      '<rect x="58" y="52" width="124" height="22" rx="11" fill="#c92a2a"/><circle cx="120" cy="10" r="13" fill="#fff" stroke="#dee2e6" stroke-width="2"/>') +
+    L('sunhat',
+      '<ellipse cx="120" cy="58" rx="88" ry="16" fill="#f4d06f" stroke="#d9a93a" stroke-width="3"/>' +
+      '<path d="M76 58 Q76 12 120 12 Q164 12 164 58Z" fill="#f7dc8a" stroke="#d9a93a" stroke-width="3" stroke-linejoin="round"/>' +
+      '<rect x="76" y="44" width="88" height="12" fill="#ff6b6b"/>') +
+    '</g></svg>';
+  },
+  mount(el) { this.el = el; el.innerHTML = this.svg(); },
+  dress(layers, scenario) {
+    if (!this.el) return;
+    const set = new Set(layers);
+    if (set.has('raincoat')) set.add('hood');
+    this.el.querySelectorAll('[data-layer]').forEach(g => g.classList.toggle('on', set.has(g.dataset.layer)));
+    this.el.dataset.scenario = scenario;
+    const key = Array.from(set).sort().join(',');
+    if (key !== this.key) {
+      this.key = key;
+      this.el.classList.remove('pop'); void this.el.offsetWidth; this.el.classList.add('pop');
     }
-    return '<g class="rays" stroke="#FFB700" stroke-width="6" stroke-linecap="round">' + s + '</g>';
-  };
-  let body = '';
-  switch (kind) {
-    case 'sun':
-      body = rays(100, 100, 68, 88) + '<circle cx="100" cy="100" r="56" fill="#FFD43B" stroke="#FFB700" stroke-width="5"/>' + eyes(100, 102) + smile(100, 102);
-      break;
-    case 'moon':
-      body = '<circle cx="100" cy="100" r="60" fill="#FFF3BF" stroke="#F2C94C" stroke-width="5"/>' +
-        '<circle cx="145" cy="72" r="8" fill="#F6E08A"/><circle cx="58" cy="136" r="10" fill="#F6E08A"/><circle cx="72" cy="66" r="5" fill="#F6E08A"/>' +
-        eyes(100, 102) + smile(100, 102) + '<text x="150" y="36" font-size="22">✨</text><text x="14" y="58" font-size="18">⭐</text>';
-      break;
-    case 'partly':
-      body = rays(142, 58, 36, 50) + '<circle cx="142" cy="58" r="30" fill="#FFD43B" stroke="#FFB700" stroke-width="4"/>' +
-        '<g transform="translate(-6 18) scale(.92)">' + cloud('#ffffff', '#cfe0ff') + eyes(105, 112) + smile(105, 112) + '</g>';
-      break;
-    case 'cloud':
-      body = cloud('#ffffff', '#cfe0ff') + eyes(105, 112) + smile(105, 112);
-      break;
-    case 'fog':
-      body = '<g transform="translate(0 -10)">' + cloud('#eef1f5', '#c9d1dc') + eyes(105, 112) + calm(105, 112) + '</g>' +
-        '<rect class="fl" x="60" y="150" width="100" height="8" rx="4" fill="#c9d1dc"/>' +
-        '<rect class="fl" style="animation-delay:-1.3s" x="34" y="166" width="130" height="8" rx="4" fill="#c9d1dc"/>' +
-        '<rect class="fl" style="animation-delay:-2.6s" x="70" y="182" width="90" height="8" rx="4" fill="#c9d1dc"/>';
-      break;
-    case 'rain': {
-      let drops = '';
-      [70, 100, 130, 85, 115].forEach((x, i) => {
-        drops += '<g transform="translate(' + x + ' ' + (i % 2 ? 148 : 140) + ')"><path class="rdrop" style="animation-delay:' + (i * 0.28).toFixed(2) + 's" d="M0 0 Q7 11 0 18 Q-7 11 0 0Z" fill="#4dabf7"/></g>';
-      });
-      body = '<g transform="translate(0 -14)">' + cloud('#d5deee', '#a3b4d1') + eyes(105, 112) + calm(105, 112) + '</g>' + drops;
-      break;
-    }
-    case 'storm':
-      body = '<g transform="translate(0 -14)">' + cloud('#98a6c2', '#6b7a99') + eyes(105, 112) + wow(105, 112) + '</g>' +
-        '<polygon class="bolt" points="108,132 90,166 104,166 96,194 126,154 111,154 122,132" fill="#FFD43B" stroke="#FFB700" stroke-width="3" stroke-linejoin="round"/>';
-      break;
-    case 'snow': {
-      let fl = '';
-      [70, 100, 130, 88, 118].forEach((x, i) => {
-        fl += '<g transform="translate(' + x + ' ' + (i % 2 ? 150 : 140) + ')"><circle class="sflake" style="animation-delay:' + (i * 0.4).toFixed(1) + 's" r="4.5" fill="#a5d8ff" stroke="#fff" stroke-width="1.5"/></g>';
-      });
-      body = '<g transform="translate(0 -14)">' + cloud('#f2f7ff', '#b9d0f2') + eyes(105, 112) + smile(105, 112) + '</g>' + fl;
-      break;
-    }
-    default:
-      body = cloud('#ffffff', '#cfe0ff') + eyes(105, 112) + smile(105, 112);
+    this.el.setAttribute('aria-label', 'Sunny Bear is wearing: ' + outfitText(layers));
   }
-  return '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' + body + '</svg>';
-}
+};
 
 /* =========================================================
-   SKY BACKGROUND
+   5. SKY BACKGROUND
    ========================================================= */
 function buildSky(theme, kind) {
   const sky = $('sky');
@@ -720,7 +1046,6 @@ function buildSky(theme, kind) {
   sky.innerHTML = '';
   if (reduceMotion) return;
   const frag = document.createDocumentFragment();
-  const r = (a, b) => a + Math.random() * (b - a);
   const add = (cls, style, text) => {
     const e = document.createElement('div');
     e.className = cls; e.style.cssText = style || '';
@@ -729,12 +1054,12 @@ function buildSky(theme, kind) {
   };
   const clouds = (n, extra) => {
     for (let i = 0; i < n; i++)
-      add('cdrift ' + (extra || ''), 'top:' + r(2, 46).toFixed(1) + '%;--s:' + r(.7, 1.6).toFixed(2) +
-        ';animation-duration:' + r(70, 140).toFixed(0) + 's;animation-delay:-' + r(0, 140).toFixed(0) + 's;opacity:' + r(.6, .95).toFixed(2));
+      add('cdrift ' + (extra || ''), 'top:' + rand(2, 46).toFixed(1) + '%;--s:' + rand(.7, 1.6).toFixed(2) +
+        ';animation-duration:' + rand(70, 140).toFixed(0) + 's;animation-delay:-' + rand(0, 140).toFixed(0) + 's;opacity:' + rand(.6, .95).toFixed(2));
   };
-  const rain = n => { for (let i = 0; i < n; i++) add('drop', 'left:' + r(0, 100).toFixed(1) + '%;animation-duration:' + r(.7, 1.3).toFixed(2) + 's;animation-delay:-' + r(0, 2).toFixed(2) + 's'); };
-  const snow = n => { for (let i = 0; i < n; i++) add('flake', 'left:' + r(0, 100).toFixed(1) + '%;font-size:' + r(10, 22).toFixed(0) + 'px;--dx:' + r(-60, 60).toFixed(0) + 'px;animation-duration:' + r(6, 13).toFixed(1) + 's;animation-delay:-' + r(0, 12).toFixed(1) + 's', '❄'); };
-  const stars = n => { for (let i = 0; i < n; i++) add('star', 'left:' + r(0, 100).toFixed(1) + '%;top:' + r(0, 70).toFixed(1) + '%;animation-delay:-' + r(0, 3).toFixed(1) + 's'); };
+  const rain = n => { for (let i = 0; i < n; i++) add('drop', 'left:' + rand(0, 100).toFixed(1) + '%;animation-duration:' + rand(.7, 1.3).toFixed(2) + 's;animation-delay:-' + rand(0, 2).toFixed(2) + 's'); };
+  const snow = n => { for (let i = 0; i < n; i++) add('flake', 'left:' + rand(0, 100).toFixed(1) + '%;font-size:' + rand(10, 22).toFixed(0) + 'px;--dx:' + rand(-60, 60).toFixed(0) + 'px;animation-duration:' + rand(6, 13).toFixed(1) + 's;animation-delay:-' + rand(0, 12).toFixed(1) + 's', '❄'); };
+  const stars = n => { for (let i = 0; i < n; i++) add('star', 'left:' + rand(0, 100).toFixed(1) + '%;top:' + rand(0, 70).toFixed(1) + '%;animation-delay:-' + rand(0, 3).toFixed(1) + 's'); };
 
   if (theme === 'sunny') { add('sunglow'); clouds(3); }
   else if (theme === 'night') { add('moonglow'); stars(45); if (kind === 'cloud' || kind === 'partly' || kind === 'fog') clouds(3, 'dark'); }
@@ -747,29 +1072,564 @@ function buildSky(theme, kind) {
 }
 
 /* =========================================================
-   RENDER
+   6. FACTS ("Did you know?")
+   ========================================================= */
+const FACTS = [
+  { k:'sun',   e:'☀️', t:'Our Sun',           x:'The Sun is a star. Its light takes about 8 minutes to travel to Earth.' },
+  { k:'sun',   e:'🌈', t:'Hidden colors',     x:'Sunlight looks white, but it is made of many colors. A rainbow shows them all!' },
+  { k:'sun',   e:'🧴', t:'Cloudy day sun',    x:'Even on cloudy days some sunlight gets through, so sunscreen still helps.' },
+  { k:'rain',  e:'🌧️', t:'Where rain comes from', x:'Clouds are made of tiny water drops. When the drops join together and get heavy, they fall as rain.' },
+  { k:'rain',  e:'🍔', t:'Raindrop shapes',   x:'Small raindrops are round, and big raindrops are shaped like little hamburger buns.' },
+  { k:'rain',  e:'⭕', t:'Full-circle rainbow', x:'A rainbow is really a full circle! From the ground we usually see only the top half.' },
+  { k:'rain',  e:'👃', t:'Rain smell',        x:'The fresh smell after rain has a special name: petrichor.' },
+  { k:'storm', e:'⚡', t:'Hot lightning',      x:'Lightning is much hotter than the surface of the Sun.' },
+  { k:'storm', e:'🔊', t:'Thunder',           x:'Thunder is the sound lightning makes when it heats the air super fast.' },
+  { k:'storm', e:'⏱️', t:'Count the seconds',  x:'Count the seconds between a flash and the boom. Every 3 seconds means the storm is about 1 kilometer away.' },
+  { k:'storm', e:'🌀', t:'Storm names',       x:'Hurricanes, typhoons and cyclones are the same kind of storm with different names in different places.' },
+  { k:'snow',  e:'❄️', t:'Six arms',          x:'Snow crystals grow with six sides or six arms.' },
+  { k:'snow',  e:'🧁', t:'Fluffy snow',       x:'Fresh snow is mostly air, which is why it feels so soft and fluffy.' },
+  { k:'cold',  e:'💨', t:'Breath clouds',     x:'On a cold day your breath makes a little cloud, because the water in your breath turns into tiny drops.' },
+  { k:'wind',  e:'🍃', t:'What is wind?',     x:'Wind happens when the Sun warms some places more than others, so the air starts to move.' },
+  { k:'wind',  e:'🪁', t:'Kite power',        x:'A kite flies because moving air pushes up against it.' },
+  { k:'cloud', e:'🐘', t:'Heavy clouds',      x:'A fluffy cloud can weigh as much as dozens of elephants!' },
+  { k:'cloud', e:'☁️', t:'Floating clouds',   x:'Clouds float because their water drops are so tiny that the air can hold them up.' },
+  { k:'fog',   e:'🌫️', t:'Fog',               x:'Fog is a cloud that touches the ground.' },
+  { k:'night', e:'🌙', t:'Moon light',        x:'The Moon does not make its own light. It shines by reflecting sunlight.' },
+  { k:'night', e:'🦗', t:'Cricket thermometer', x:'Crickets chirp faster when the weather is warmer.' },
+  { k:'hot',   e:'💧', t:'Sweat is cool',     x:'When you sweat, the water on your skin dries and helps cool your body down.' },
+  { k:'general', e:'🎈', t:'Balloons',        x:'Hot air rises, which is why hot air balloons float up into the sky.' },
+  { k:'general', e:'🧊', t:'Three forms of water', x:'Water can be a liquid, a solid (ice) or a gas (steam).' },
+  { k:'general', e:'🌡️', t:'Thermometer',     x:'A thermometer tells us how hot or cold it is.' }
+];
+function factKeys(d) {
+  const k = wxInfo(d.code, d.day).kind, keys = [];
+  if (k === 'storm') keys.push('storm', 'rain');
+  else if (k === 'rain') keys.push('rain');
+  else if (k === 'snow') keys.push('snow', 'cold');
+  else if (k === 'fog') keys.push('fog', 'cloud');
+  else if (k === 'cloud') keys.push('cloud');
+  else keys.push(d.day ? 'sun' : 'night');
+  if (d.wind >= 30) keys.unshift('wind');
+  if (d.feels >= 32) keys.push('hot');
+  if (d.feels <= 5 && keys.indexOf('cold') < 0) keys.push('cold');
+  return keys;
+}
+function renderFact() {
+  const list = state.dyk.list; if (!list.length) return;
+  const f = list[state.dyk.idx % list.length];
+  $('dykEmoji').textContent = f.e; $('dykTitle').textContent = f.t; $('dykText').textContent = f.x;
+  $('dykCount').textContent = 'Fact ' + (state.dyk.idx % list.length + 1) + ' of ' + list.length;
+}
+function refreshFacts(d) {
+  const keys = factKeys(d), key = keys.join(',');
+  if (state.dyk.key === key && state.dyk.list.length) return;
+  const ctx = FACTS.filter(f => keys.indexOf(f.k) > -1), rest = FACTS.filter(f => keys.indexOf(f.k) < 0);
+  const off = dayNumber() % Math.max(1, rest.length);
+  state.dyk = { key, idx: 0, list: ctx.concat(rest.slice(off), rest.slice(0, off)) };
+  renderFact();
+}
+
+/* =========================================================
+   7. GAMIFICATION - daily quiz, streak, badges
+   ========================================================= */
+const QUIZ = [
+  { e:'🌈', q:'What makes a rainbow?', o:['Sunlight and raindrops','Paint from the sky','Colored clouds'], a:0, why:'Sunlight bends and splits into colors inside tiny raindrops.' },
+  { e:'⚡', q:'What makes the sound of thunder?', o:['Clouds bumping together','Lightning heating the air very fast','Wind whistling'], a:1, why:'Lightning heats the air so quickly that it goes BOOM!' },
+  { e:'❄️', q:'How many sides does a snowflake usually have?', o:['3','6','10'], a:1, why:'Snow crystals grow with six sides or arms.' },
+  { e:'🌫️', q:'What is fog?', o:['A cloud near the ground','Smoke from a chimney','Frozen rain'], a:0, why:'Fog is a cloud that touches the ground.' },
+  { e:'🌡️', q:'What does a thermometer measure?', o:['How windy it is','How much rain fell','How hot or cold it is'], a:2, why:'A thermometer measures temperature.' },
+  { e:'☀️', q:'What gives us light and warmth during the day?', o:['The Moon','The Sun','A street lamp'], a:1, why:'The Sun is a star that shines on our planet.' },
+  { e:'🌧️', q:'Which tool tells us how much rain has fallen?', o:['A rain gauge','A telescope','A compass'], a:0, why:'A rain gauge catches rain so we can measure it.' },
+  { e:'💨', q:'What is wind?', o:['Moving air','Falling stars','Melting snow'], a:0, why:'Wind is air that is moving from one place to another.' },
+  { e:'🧴', q:'What should you use on a very sunny day?', o:['Snow boots and mittens','Sunscreen and a sun hat','Only a raincoat'], a:1, why:'Sunscreen and a hat protect your skin from strong sunlight.' },
+  { e:'🌀', q:'Which big storm has a calm middle called an eye?', o:['A hurricane','A drizzle','A breeze'], a:0, why:'A hurricane spins around a calm center called the eye.' },
+  { e:'🧊', q:'What do we call balls of ice that fall from storm clouds?', o:['Dew','Hail','Fog'], a:1, why:'Hail forms inside strong storm clouds.' },
+  { e:'🧭', q:'Which tool shows which way the wind blows?', o:['A weather vane','A ruler','A clock'], a:0, why:'A weather vane turns to point into the wind.' },
+  { e:'💧', q:'What happens to water when it gets cold enough (0°C or 32°F)?', o:['It turns into ice','It disappears','It turns into sand'], a:0, why:'Water freezes into ice at 0°C (32°F).' },
+  { e:'🌿', q:'What are the tiny water drops you sometimes see on grass in the morning?', o:['Dew','Hail','Sparks'], a:0, why:'Dew forms when the air cools down at night.' },
+  { e:'🌅', q:'In which direction does the Sun seem to rise?', o:['West','East','It never moves'], a:1, why:'Earth spins, so the Sun seems to rise in the east and set in the west.' },
+  { e:'🔁', q:'What happens to water after it rises into the sky?', o:['It becomes clouds and later falls as rain or snow','It disappears forever','It turns into wind'], a:0, why:'This trip of water is called the water cycle.' },
+  { e:'👀', q:'In a storm, what do you notice first?', o:['Thunder','Lightning','They always come together'], a:1, why:'Light travels faster than sound, so you see the flash before you hear the boom.' },
+  { e:'🌱', q:'What do plants need from the Sun to grow?', o:['Light','Snow','Only wind'], a:0, why:'Plants use sunlight to make their own food.' },
+  { e:'🌙', q:'Does the Moon make its own light?', o:['Yes, it glows by itself','No, it reflects sunlight','Only on Tuesdays'], a:1, why:'The Moon shines because sunlight bounces off it.' },
+  { e:'🌪️', q:'What do we call a fast spinning funnel of wind that touches the ground?', o:['A tornado','A rainbow','Frost'], a:0, why:'A tornado is a spinning column of air. Grown-ups will guide you to a safe place.' },
+  { e:'🎈', q:'What does hot air do?', o:['It rises','It sinks like a stone','It turns into ice'], a:0, why:'Hot air rises, which is how hot air balloons float.' }
+];
+const BADGES = [
+  { id:'rookie',   e:'🌱', t:'Weather Rookie',        d:'Look up your first city',                test: g => state.visited.length >= 1 },
+  { id:'explorer', e:'🧭', t:'Weather Explorer',      d:'Look up 3 places',                       test: g => state.visited.length >= 3 },
+  { id:'wizard',   e:'🧙', t:'Weather Wizard',        d:'Look up 6 places',                       test: g => state.visited.length >= 6 },
+  { id:'champion', e:'🏆', t:'Sky Champion',          d:'Look up 12 places',                      test: g => state.visited.length >= 12 },
+  { id:'junior',   e:'🌦️', t:'Junior Meteorologist',  d:'Get 3 quiz answers right',               test: g => g.correct >= 3 },
+  { id:'brainy',   e:'🧠', t:'Weather Brainiac',      d:'Get 10 quiz answers right',              test: g => g.correct >= 10 },
+  { id:'sun',      e:'☀️', t:'Sun Catcher',           d:'See sunny weather on 3 different days',  test: g => g.sunny.length >= 3 },
+  { id:'rain',     e:'☔', t:'Rain Ranger',           d:'See rainy weather',                      test: g => g.seen.rain },
+  { id:'snow',     e:'⛄', t:'Snow Explorer',         d:'See snowy weather somewhere',            test: g => g.seen.snow },
+  { id:'storm',    e:'⚡', t:'Storm Watcher',         d:'See a thunderstorm (from indoors!)',     test: g => g.seen.storm },
+  { id:'streak3',  e:'🔥', t:'Streak Star',           d:'Play the quiz 3 days in a row',          test: g => g.best >= 3 },
+  { id:'streak7',  e:'🌈', t:'Rainbow Streak',        d:'Play the quiz 7 days in a row',          test: g => g.best >= 7 },
+  { id:'globe',    e:'🌍', t:'Globe Trotter',         d:'Tap 5 cities on the world map',          test: g => g.mapVisits.length >= 5 },
+  { id:'fashion',  e:'🎩', t:'Fashion Star',          d:'Try all 4 outfits on Sunny Bear',        test: g => g.tried.length >= 4 },
+  { id:'listener', e:'🗣️', t:'Good Listener',         d:'Let Sunny Bear read the weather to you', test: g => g.voice },
+  { id:'sound',    e:'🎵', t:'Sound Explorer',        d:'Turn on weather sounds',                 test: g => g.sound }
+];
+
+const streakNow = () => { const g = state.game; return (g.lastDate === dayKey() || g.lastDate === yesterdayKey()) ? g.streak : 0; };
+const starsNow = () => { const g = state.game; return g.correct * 10 + g.answered * 2 + Object.keys(g.badges).length * 5; };
+
+function confetti() {
+  if (reduceMotion) return;
+  const box = document.createElement('div'); box.className = 'confetti'; box.setAttribute('aria-hidden', 'true');
+  const em = ['🎉', '⭐', '✨', '🌈', '☀️', '💧'];
+  for (let i = 0; i < 28; i++) {
+    const s = document.createElement('i'); s.textContent = em[i % em.length];
+    s.style.cssText = 'left:' + rand(0, 100).toFixed(1) + '%;--dx:' + rand(-80, 80).toFixed(0) + 'px;font-size:' + rand(16, 30).toFixed(0) +
+      'px;animation-delay:' + rand(0, .6).toFixed(2) + 's;animation-duration:' + rand(2, 3.4).toFixed(2) + 's';
+    box.appendChild(s);
+  }
+  document.body.appendChild(box);
+  setTimeout(() => box.remove(), 4500);
+}
+
+function checkBadges(silent) {
+  const g = state.game, fresh = [];
+  BADGES.forEach(b => { if (!g.badges[b.id] && b.test(g)) { g.badges[b.id] = dayKey(); fresh.push(b); } });
+  if (fresh.length) {
+    saveGame();
+    if (!silent) {
+      toast('New badge: ' + fresh[0].e + ' ' + fresh[0].t + '!' + (fresh.length > 1 ? ' (+' + (fresh.length - 1) + ' more)' : ''));
+      confetti();
+    }
+  }
+  renderBadges(); renderQuizStats();
+}
+function renderBadges() {
+  const g = state.game, n = Object.keys(g.badges).length;
+  $('explored').textContent = 'You have ' + n + ' of ' + BADGES.length + ' badges and you have explored ' + state.visited.length + (state.visited.length === 1 ? ' place.' : ' places.');
+  $('badges').innerHTML = BADGES.map(b => {
+    const got = g.badges[b.id];
+    return '<div class="bcard' + (got ? '' : ' locked') + '"><div class="be" aria-hidden="true">' + b.e + '</div><b>' + esc(b.t) +
+      '</b><small>' + esc(got ? 'Earned!' : b.d) + '</small></div>';
+  }).join('');
+}
+function renderQuizStats() {
+  const s = streakNow();
+  $('qStreak').textContent = '🔥 ' + s + (s === 1 ? ' day' : ' days') + ' in a row';
+  $('qStars').textContent = '⭐ ' + starsNow() + ' stars';
+}
+function todayQuiz() {
+  const q = QUIZ[dayNumber() % QUIZ.length];
+  return { q, order: shuffledIdx(q.o.length, dayNumber() * 7 + 3) };
+}
+function renderQuiz() {
+  const g = state.game, tq = todayQuiz(), q = tq.q, done = g.today.date === dayKey();
+  renderQuizStats();
+  const body = $('quizBody'); body.innerHTML = '';
+  const qt = document.createElement('p'); qt.className = 'q-text'; qt.textContent = q.e + ' ' + q.q; body.appendChild(qt);
+  const opts = document.createElement('div'); opts.className = 'q-opts';
+  tq.order.forEach(orig => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'q-opt'; b.textContent = q.o[orig];
+    if (done) {
+      b.disabled = true;
+      if (orig === q.a) b.classList.add('right'); else if (orig === g.today.pick) b.classList.add('wrong');
+    } else b.addEventListener('click', () => answerQuiz(orig));
+    opts.appendChild(b);
+  });
+  body.appendChild(opts);
+  if (done) {
+    const why = document.createElement('div'); why.className = 'q-why';
+    why.innerHTML = (g.today.right ? '🎉 <b>Correct! +10 stars.</b> ' : '🤔 <b>Nice try!</b> The answer is “' + esc(q.o[q.a]) + '”. ') +
+      esc(q.why) + '<br><small>Come back tomorrow for a new question and keep your streak going!</small>';
+    body.appendChild(why);
+  }
+  const act = document.createElement('div'); act.className = 'q-actions';
+  const rb = document.createElement('button'); rb.type = 'button'; rb.className = 'btn btn-fun'; rb.textContent = '🔊 Read the question';
+  rb.addEventListener('click', () => Voice.speak(q.q + ' The choices are: ' + tq.order.map(i => q.o[i]).join(', or ') + '.'));
+  act.appendChild(rb); body.appendChild(act);
+}
+function answerQuiz(orig) {
+  const g = state.game, q = todayQuiz().q;
+  if (g.today.date === dayKey()) return;
+  const right = orig === q.a;
+  g.today = { date: dayKey(), pick: orig, right };
+  g.answered++; if (right) g.correct++;
+  g.streak = g.lastDate === yesterdayKey() ? g.streak + 1 : 1;
+  g.lastDate = dayKey(); g.best = Math.max(g.best, g.streak);
+  saveGame();
+  if (right) { confetti(); toast('Correct! +10 stars ⭐'); } else toast('Good try! Now you know the answer. 💡');
+  renderQuiz(); checkBadges();
+}
+function trackWeather(d, info) {
+  const g = state.game; let changed = false;
+  if (info.kind === 'clear' && d.day && g.sunny.indexOf(dayKey()) < 0) { g.sunny.push(dayKey()); changed = true; }
+  if (info.kind === 'rain' && !g.seen.rain) { g.seen.rain = true; changed = true; }
+  if (info.kind === 'snow' && !g.seen.snow) { g.seen.snow = true; changed = true; }
+  if (info.kind === 'storm' && !g.seen.storm) { g.seen.storm = true; changed = true; }
+  if (changed) saveGame();
+}
+
+/* =========================================================
+   8. VOICE ASSISTANT (Web Speech API)
+   ========================================================= */
+const Voice = {
+  voices: [], token: 0, speaking: false,
+  supported() { return 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window; },
+  init() {
+    if (!this.supported()) return;
+    const load = () => { this.voices = speechSynthesis.getVoices() || []; };
+    load();
+    if (speechSynthesis.addEventListener) speechSynthesis.addEventListener('voiceschanged', load);
+  },
+  pick() {
+    const en = this.voices.filter(v => /^en([-_]|$)/i.test(v.lang));
+    if (!en.length) return null;
+    const friendly = /(samantha|karen|tessa|moira|fiona|victoria|ava|allison|zira|aria|jenny|libby|sonia|google uk english female|google us english|female)/i;
+    const mine = (navigator.language || 'en-US').toLowerCase();
+    return en.find(v => friendly.test(v.name)) || en.find(v => v.lang.toLowerCase() === mine) || en[0];
+  },
+  setUI(on) {
+    this.speaking = on;
+    $('speakBtn').textContent = on ? '⏹ Stop reading' : '🔊 Read it to me';
+  },
+  speak(text) {
+    if (!this.supported()) { toast('Reading aloud does not work on this device.'); return false; }
+    speechSynthesis.cancel();
+    const my = ++this.token;
+    const parts = (text.match(/[^.!?]+[.!?]*/g) || [text]).map(s => s.trim()).filter(Boolean);
+    const voice = this.pick();
+    this.setUI(true);
+    parts.forEach((part, i) => {
+      const u = new SpeechSynthesisUtterance(part);
+      if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = 'en-US';
+      u.pitch = 1.3;    // cheerful, friendly
+      u.rate = 0.92;    // a little slower so kids can follow
+      u.volume = 1;
+      if (i === parts.length - 1) {
+        u.onend = () => { if (my === this.token) this.setUI(false); };
+        u.onerror = () => { if (my === this.token) this.setUI(false); };
+      }
+      speechSynthesis.speak(u);
+    });
+    const g = state.game; if (!g.voice) { g.voice = true; saveGame(); checkBadges(); }
+    return true;
+  },
+  stop() { if (this.supported()) { this.token++; speechSynthesis.cancel(); } this.setUI(false); }
+};
+
+/* =========================================================
+   9. WEATHER SOUNDSCAPES (Web Audio API - no audio files needed)
+   ========================================================= */
+const SCENE_LABELS = { rain:'Gentle rain 🌧️', storm:'Rain and far-away thunder ⛈️', wind:'Whooshing wind 💨',
+  birds:'Birds chirping 🐦', crickets:'Night crickets 🦗', snow:'Soft winter wind ❄️', breeze:'A quiet breeze 🍃' };
+function soundSceneOf(d) {
+  const k = wxInfo(d.code, d.day).kind;
+  if (k === 'storm') return 'storm';
+  if (k === 'rain') return 'rain';
+  if (k === 'snow') return 'snow';
+  if (d.wind >= 30) return 'wind';
+  if (!d.day) return 'crickets';
+  if (k === 'clear' || k === 'partly') return 'birds';
+  return 'breeze';
+}
+const Sound = (function () {
+  let ctx = null, master = null, cur = null, gen = 0, on = false, scene = null, vol = 0.4;
+  const buffers = {};
+  const supported = () => !!(window.AudioContext || window.webkitAudioContext);
+
+  function makeBuffer(type) {
+    const len = ctx.sampleRate * 3, buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+    if (type === 'pink') {
+      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+      for (let i = 0; i < len; i++) {
+        const w = Math.random() * 2 - 1;
+        b0 = .99886 * b0 + w * .0555179; b1 = .99332 * b1 + w * .0750759; b2 = .969 * b2 + w * .153852;
+        b3 = .8665 * b3 + w * .3104856; b4 = .55 * b4 + w * .5329522; b5 = -.7616 * b5 - w * .016898;
+        d[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * .5362) * .11; b6 = w * .115926;
+      }
+    } else {
+      let last = 0;
+      for (let i = 0; i < len; i++) { const w = Math.random() * 2 - 1; last = (last + .02 * w) / 1.02; d[i] = last * 3.5; }
+    }
+    return buf;
+  }
+  function init() {
+    if (ctx) return true;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    ctx = new AC();
+    master = ctx.createGain(); master.gain.value = vol; master.connect(ctx.destination);
+    buffers.pink = makeBuffer('pink'); buffers.brown = makeBuffer('brown');
+    return true;
+  }
+  function noise(type, c) {
+    const s = ctx.createBufferSource(); s.buffer = buffers[type]; s.loop = true;
+    s.start(0, Math.random() * 2); c.nodes.push(s); return s;
+  }
+  function filt(type, freq, q) { const f = ctx.createBiquadFilter(); f.type = type; f.frequency.value = freq; if (q) f.Q.value = q; return f; }
+  function blip(out, t, f0, f1, dur, gain) {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(f0, t);
+    if (f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, t + dur * .8);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(gain, t + .01); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g); g.connect(out); o.start(t); o.stop(t + dur + .02);
+  }
+  function loop(c, g, key, fn, min, max) {
+    const tick = () => { if (g !== gen || !on) return; try { fn(); } catch (e) {} c.t[key] = setTimeout(tick, rand(min, max)); };
+    c.t[key] = setTimeout(tick, rand(min, max) / 2);
+  }
+  function breeze(out, c, cutoff, gain, lfoAmt, lfoHz) {
+    const n = noise('pink', c), lp = filt('lowpass', cutoff, .7), gn = ctx.createGain(); gn.gain.value = gain;
+    const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = lfoHz; lg.gain.value = lfoAmt;
+    lfo.connect(lg); lg.connect(lp.frequency); lfo.start();
+    n.connect(lp); lp.connect(gn); gn.connect(out); c.nodes.push(lp, gn, lfo, lg);
+  }
+  function thunder(out) {
+    const s = ctx.createBufferSource(); s.buffer = buffers.brown; s.loop = true;
+    const lp = filt('lowpass', 180), g = ctx.createGain(), t = ctx.currentTime;
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.9, t + .4); g.gain.exponentialRampToValueAtTime(.0001, t + 3.6);
+    s.connect(lp); lp.connect(g); g.connect(out); s.start(t, Math.random() * 2); s.stop(t + 3.8);
+  }
+  const SCENES = {
+    rain(out, c, g, heavy) {
+      const n = noise('pink', c), hp = filt('highpass', 600), lp = filt('lowpass', 7000), gn = ctx.createGain();
+      gn.gain.value = heavy ? .55 : .4; n.connect(hp); hp.connect(lp); lp.connect(gn); gn.connect(out); c.nodes.push(hp, lp, gn);
+      loop(c, g, 'drip', () => blip(out, ctx.currentTime, rand(900, 2400), rand(700, 1600), .05, .05), 90, 260);
+    },
+    storm(out, c, g) { SCENES.rain(out, c, g, true); loop(c, g, 'thunder', () => thunder(out), 9000, 20000); },
+    wind(out, c) { breeze(out, c, 500, .6, 260, .15); },
+    breeze(out, c) { breeze(out, c, 350, .22, 120, .1); },
+    snow(out, c, g) {
+      breeze(out, c, 260, .16, 90, .08);
+      loop(c, g, 'bell', () => blip(out, ctx.currentTime, rand(1200, 1800), rand(1200, 1800), .9, .03), 3000, 7000);
+    },
+    birds(out, c, g) {
+      breeze(out, c, 320, .08, 60, .1);
+      loop(c, g, 'bird', () => {
+        const t = ctx.currentTime, n = 2 + Math.floor(Math.random() * 3), base = rand(2600, 4000);
+        for (let i = 0; i < n; i++) blip(out, t + i * .13, base * rand(.95, 1.1), base * rand(1.25, 1.6), .11, .16);
+      }, 900, 2800);
+    },
+    crickets(out, c, g) {
+      breeze(out, c, 300, .05, 50, .08);
+      loop(c, g, 'cricket', () => {
+        const t = ctx.currentTime, f = rand(4200, 4700);
+        for (let i = 0; i < 5; i++) blip(out, t + i * .06, f, f, .04, .05);
+      }, 500, 1200);
+    }
+  };
+  function fadeOut() {
+    const c = cur; if (!c) return;
+    gen++; cur = null;
+    Object.keys(c.t).forEach(k => clearTimeout(c.t[k]));
+    const t = ctx.currentTime;
+    c.out.gain.cancelScheduledValues(t); c.out.gain.setTargetAtTime(0, t, .25);
+    setTimeout(() => {
+      c.nodes.forEach(n => { try { if (n.stop) n.stop(); } catch (e) {} try { n.disconnect(); } catch (e) {} });
+      try { c.out.disconnect(); } catch (e) {}
+    }, 1600);
+  }
+  function play(name) {
+    if (!on || !ctx) return;
+    if (name === scene && cur) return;
+    fadeOut(); scene = name;
+    const myGen = ++gen;
+    const out = ctx.createGain(); out.gain.value = 0; out.connect(master);
+    out.gain.linearRampToValueAtTime(1, ctx.currentTime + 1.2);
+    cur = { out, nodes: [], t: {} };
+    SCENES[name](out, cur, myGen);
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (!ctx || !on) return;
+    if (document.hidden) ctx.suspend(); else ctx.resume();
+  });
+  return {
+    supported,
+    get on() { return on; },
+    get scene() { return scene; },
+    start(name) { if (!init()) return false; ctx.resume(); on = true; play(name); return true; },
+    play,
+    stop() { on = false; if (ctx) fadeOut(); scene = null; },
+    setVolume(v) { vol = v; if (master) master.gain.setTargetAtTime(v, ctx.currentTime, .05); }
+  };
+})();
+function updateSoundUI() {
+  const on = Sound.on;
+  $('soundBtn').textContent = on ? '🎵 Sounds: On' : '🎵 Sounds: Off';
+  $('soundBtn').setAttribute('aria-pressed', on ? 'true' : 'false');
+  $('soundName').textContent = on && Sound.scene ? 'Now playing: ' + SCENE_LABELS[Sound.scene] : '';
+}
+
+/* =========================================================
+   10. WORLD EXPLORER (simple SVG map)
+   ========================================================= */
+const CITIES = [
+  { id:'nyc', name:'New York',       country:'USA',            region:'',        lat:40.7128,  lon:-74.006,   e:'🗽', lm:'Statue of Liberty',   dx:0,   dy:0,  lab:'b' },
+  { id:'rio', name:'Rio de Janeiro', country:'Brazil',         region:'',        lat:-22.9068, lon:-43.1729,  e:'⛰️', lm:'Sugarloaf Mountain', dx:0,   dy:0,  lab:'b' },
+  { id:'lon', name:'London',         country:'United Kingdom', region:'England', lat:51.5074,  lon:-0.1278,   e:'🕰️', lm:'Big Ben',            dx:-22, dy:-16, lab:'l' },
+  { id:'par', name:'Paris',          country:'France',         region:'',        lat:48.8566,  lon:2.3522,    e:'🗼', lm:'Eiffel Tower',        dx:-4,  dy:8,  lab:'l' },
+  { id:'rom', name:'Rome',           country:'Italy',          region:'',        lat:41.9028,  lon:12.4964,   e:'🏛️', lm:'Colosseum',          dx:6,   dy:8,  lab:'r' },
+  { id:'cai', name:'Cairo',          country:'Egypt',          region:'',        lat:30.0444,  lon:31.2357,   e:'🐪', lm:'the Pyramids',        dx:0,   dy:0,  lab:'b' },
+  { id:'cpt', name:'Cape Town',      country:'South Africa',   region:'',        lat:-33.9249, lon:18.4241,   e:'🐧', lm:'Penguin beach',       dx:0,   dy:0,  lab:'b' },
+  { id:'dxb', name:'Dubai',          country:'UAE',            region:'',        lat:25.2048,  lon:55.2708,   e:'🏙️', lm:'Burj Khalifa',       dx:0,   dy:0,  lab:'b' },
+  { id:'bwp', name:'Bahawalpur',     country:'Pakistan',       region:'Punjab',  lat:29.3956,  lon:71.6836,   e:'🏰', lm:'Noor Mahal',          dx:0,   dy:0,  lab:'r' },
+  { id:'pek', name:'Beijing',        country:'China',          region:'',        lat:39.9042,  lon:116.4074,  e:'🏯', lm:'the Great Wall',      dx:0,   dy:0,  lab:'l' },
+  { id:'tyo', name:'Tokyo',          country:'Japan',          region:'',        lat:35.6762,  lon:139.6503,  e:'⛩️', lm:'Senso-ji Temple',    dx:0,   dy:0,  lab:'b' },
+  { id:'syd', name:'Sydney',         country:'Australia',      region:'',        lat:-33.8688, lon:151.2093,  e:'🎭', lm:'the Opera House',     dx:0,   dy:0,  lab:'b' }
+];
+/* very simple, cartoon-style continents: [longitude, latitude] points */
+const LAND = [
+  [[-168,66],[-152,71],[-125,70],[-100,73],[-80,70],[-66,60],[-56,52],[-66,45],[-75,38],[-81,31],[-80,25],[-84,30],[-90,29],[-97,26],[-97,21],[-90,21],[-87,16],[-83,10],[-79,8],[-83,8],[-88,13],[-95,16],[-105,20],[-110,24],[-115,30],[-120,34],[-124,40],[-125,48],[-135,58],[-150,60],[-165,55],[-160,60]],
+  [[-55,60],[-45,60],[-20,70],[-20,80],[-45,83],[-65,80],[-70,76],[-58,68]],
+  [[-79,8],[-72,12],[-62,10],[-52,5],[-50,0],[-35,-6],[-39,-15],[-42,-23],[-48,-28],[-58,-36],[-65,-42],[-68,-52],[-72,-54],[-75,-48],[-73,-38],[-71,-30],[-70,-18],[-76,-14],[-81,-5],[-80,0],[-77,4]],
+  [[-9,37],[-9,43],[-2,44],[-4,48],[2,51],[8,54],[9,57],[5,60],[10,64],[16,69],[26,71],[40,68],[60,70],[75,73],[100,77],[130,72],[150,70],[170,68],[180,66],[172,62],[160,58],[155,52],[143,52],[140,46],[133,43],[128,38],[126,35],[122,40],[121,32],[120,25],[110,20],[107,11],[105,9],[100,13],[100,5],[104,1],[98,8],[95,16],[91,22],[87,21],[80,15],[77,8],[73,17],[70,21],[66,25],[57,26],[51,24],[56,25],[58,21],[52,16],[44,12],[40,18],[35,28],[33,31],[36,36],[30,36],[26,38],[26,41],[24,40],[22,37],[20,40],[18,40],[16,38],[12,44],[8,44],[3,43],[-1,37]],
+  [[-17,21],[-16,29],[-10,35],[-2,36],[10,37],[11,33],[20,31],[32,31],[34,27],[38,20],[43,12],[51,12],[48,4],[40,-3],[40,-15],[35,-24],[32,-29],[27,-34],[19,-35],[15,-27],[12,-17],[13,-8],[9,-1],[9,4],[3,6],[-8,4],[-13,8],[-17,14]],
+  [[114,-22],[122,-18],[130,-12],[136,-12],[142,-11],[146,-19],[153,-26],[151,-34],[146,-39],[138,-35],[129,-32],[115,-34]],
+  [[-5,50],[1,51],[2,53],[-2,57],[-6,58],[-5,54]],
+  [[130,32],[135,34],[140,36],[141,41],[142,45],[139,40],[136,37],[131,34]],
+  [[172,-41],[174,-36],[178,-38],[175,-42]],
+  [[44,-25],[47,-25],[50,-15],[49,-12],[44,-17]]
+];
+const WorldMap = {
+  W: 1000, H: 420,
+  px(lon) { return (lon + 180) / 360 * this.W; },
+  py(lat) { return (80 - Math.min(80, lat)) / 138 * this.H; },
+  build() {
+    const svg = $('world'); if (!svg) return;
+    const path = pts => 'M' + pts.map(p => this.px(p[0]).toFixed(1) + ' ' + this.py(p[1]).toFixed(1)).join(' L') + 'Z';
+    let s = '<defs><linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#74c0fc"/><stop offset="1" stop-color="#b2e2ff"/></linearGradient></defs>' +
+            '<rect width="1000" height="420" fill="url(#ocean)"/>';
+    for (let lon = -120; lon <= 180; lon += 60) s += '<line class="grat" x1="' + this.px(lon) + '" y1="0" x2="' + this.px(lon) + '" y2="420"/>';
+    [60, 30, 0, -30].forEach(lat => { s += '<line class="grat" x1="0" y1="' + this.py(lat) + '" x2="1000" y2="' + this.py(lat) + '"/>'; });
+    LAND.forEach(p => { s += '<path class="land" d="' + path(p) + '"/>'; });
+    CITIES.forEach(c => {
+      const x = this.px(c.lon) + c.dx, y = this.py(c.lat) + c.dy;
+      const lx = c.lab === 'l' ? -24 : c.lab === 'r' ? 24 : 0, ly = c.lab === 'b' ? 32 : 0;
+      const anchor = c.lab === 'l' ? 'end' : c.lab === 'r' ? 'start' : 'middle';
+      s += '<g class="city" id="city-' + c.id + '" data-id="' + c.id + '" tabindex="0" role="button" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')"' +
+           ' aria-label="' + esc(c.name + ', ' + c.lm + '. Tap to see the weather.') + '"><title>' + esc(c.name + ' - ' + c.lm) + '</title>' +
+           '<circle class="hit" r="26" fill="transparent"/><circle class="ring" r="16"/><circle class="dot" r="16"/>' +
+           '<text class="em" y="1" text-anchor="middle" dominant-baseline="central">' + c.e + '</text>' +
+           '<text class="lab" id="lab-' + c.id + '" x="' + lx + '" y="' + ly + '" text-anchor="' + anchor + '" dominant-baseline="central">' + esc(c.name) + '</text></g>';
+    });
+    svg.innerHTML = s;
+    const choose = e => { const g = e.target.closest && e.target.closest('.city'); return g ? g.dataset.id : null; };
+    svg.addEventListener('click', e => { const id = choose(e); if (id) visitCity(id); });
+    svg.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { const id = choose(e); if (id) { e.preventDefault(); visitCity(id); } } });
+    const hover = e => { const id = choose(e); const c = id && CITIES.find(x => x.id === id); if (c) $('worldCaption').textContent = c.e + ' ' + c.name + ': ' + c.lm + '. Tap to visit!'; };
+    svg.addEventListener('mouseover', hover); svg.addEventListener('focusin', hover);
+    // chip list (easy to tap on phones, works with keyboards and screen readers)
+    const chips = $('worldChips'); chips.innerHTML = '';
+    CITIES.forEach(c => {
+      const w = document.createElement('span'); w.className = 'chip';
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = c.e + ' ' + c.name; b.title = c.lm;
+      b.addEventListener('click', () => visitCity(c.id)); w.appendChild(b); chips.appendChild(w);
+    });
+    $('worldCaption').textContent = '👆 Tap a landmark to start your trip!';
+  },
+  labels() {
+    CITIES.forEach((c, i) => {
+      const el = $('lab-' + c.id); if (!el) return;
+      const w = state.world && state.world[i];
+      el.textContent = w ? c.name + ' ' + cvt(w.temp) + '° ' + wxInfo(w.code, w.day).emoji : c.name;
+    });
+  },
+  mark(id) {
+    document.querySelectorAll('.city').forEach(g => g.classList.toggle('sel', g.dataset.id === id));
+  }
+};
+function cityNear(p) {
+  return CITIES.find(c => Math.abs(c.lat - p.lat) < 0.6 && Math.abs(c.lon - p.lon) < 0.6);
+}
+function visitCity(id) {
+  const c = CITIES.find(x => x.id === id); if (!c) return;
+  state.selCity = id; WorldMap.mark(id);
+  $('worldCaption').textContent = '✈️ Off to ' + c.name + '! Look for ' + c.lm + ' ' + c.e;
+  const g = state.game;
+  if (g.mapVisits.indexOf(id) < 0) { g.mapVisits.push(id); saveGame(); }
+  loadPlace({ name: c.name, region: c.region, country: c.country, lat: c.lat, lon: c.lon }).then(() => checkBadges());
+  window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+}
+async function loadWorld() {
+  try {
+    const res = await API.worldNow(CITIES);
+    if (!Array.isArray(res)) return;
+    state.world = res.map(r => ({ temp: r.current.temperature_2m, code: r.current.weather_code, day: r.current.is_day === 1 }));
+    WorldMap.labels();
+  } catch (e) { /* the map still works without live temperatures */ }
+}
+
+/* =========================================================
+   11. RENDER
    ========================================================= */
 function showLoading(on, text) {
   $('loading').classList.toggle('hidden', !on);
   if (text) $('loadingText').textContent = text;
 }
 
+function buildSpeech(d, r, info) {
+  const outfit = outfitText(r.bear);
+  if (r.preview) {
+    return 'Let me show you my ' + r.title + ' outfit! I am ready with: ' + outfit + '. ' + r.tagline + ' ' +
+      (r.todo[0] ? r.todo[0].t + '. ' + r.todo[0].x : '');
+  }
+  let s = 'Hi! I am Sunny Bear. In ' + d.place.name + ' it is ' + cvt(d.temp) + ' degrees ' +
+    (state.unit === 'C' ? 'Celsius' : 'Fahrenheit') + '. The weather is ' + info.text.toLowerCase() + '. ' + r.tagline +
+    ' My outfit: ' + outfit + '. ';
+  if (r.todo[0]) s += 'Idea for today: ' + r.todo[0].t + '. ' + r.todo[0].x + ' ';
+  safetyNotes(d).forEach(n => { s += n.x + ' '; });
+  return s;
+}
+
+function renderReco() {
+  const d = state.data; if (!d) return;
+  const info = wxInfo(d.code, d.day);
+  const real = state.reco || (state.reco = buildReco(d));
+  const r = state.preview ? previewReco(state.preview) : real;
+
+  Bear.dress(r.bear, r.id);
+  $('bubble').textContent = r.preview ? "Ta-da! Here is my " + r.title.toLowerCase() + " outfit!" : r.tagline + ' ' + info.emoji;
+  $('outfitLine').textContent = '🎒 My outfit: ' + outfitText(r.bear);
+
+  $('scCard').style.setProperty('--sc', r.color);
+  $('scEmoji').textContent = r.emoji;
+  $('scTitle').textContent = r.title;
+  $('scTag').textContent = r.tagline;
+  $('scFlag').classList.toggle('hidden', !r.preview);
+  $('wear').innerHTML = r.wear.map(i => '<div><span class="we" aria-hidden="true">' + i.e + '</span><span>' + esc(i.l) + '</span></div>').join('');
+  $('tips').innerHTML = r.todo.map(t => '<div class="tipc"><span class="te" aria-hidden="true">' + t.e + '</span><div><b>' + esc(t.t) + '</b><span>' + esc(t.x) + '</span></div></div>').join('');
+  $('scTip').textContent = '💡 Safety tip: ' + r.tip;
+  document.querySelectorAll('.sc-try button').forEach(b => {
+    b.setAttribute('aria-pressed', String((state.preview || 'live') === b.dataset.sc));
+  });
+  state.speech = buildSpeech(d, r, info);
+}
+
+function renderSafety(d) {
+  const box = $('safety');
+  const notes = safetyNotes(d).filter(n => !state.dismissed.has(placeKey(d.place) + '|' + n.id));
+  box.innerHTML = '';
+  notes.forEach(n => {
+    const el = document.createElement('div'); el.className = 'note'; el.setAttribute('role', 'status');
+    const e = document.createElement('span'); e.className = 'ne'; e.setAttribute('aria-hidden', 'true'); e.textContent = n.e;
+    const x = document.createElement('span'); x.className = 'nx'; x.textContent = n.x;
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'note-x'; b.textContent = '✕'; b.setAttribute('aria-label', 'Hide this tip');
+    b.addEventListener('click', () => { state.dismissed.add(placeKey(d.place) + '|' + n.id); renderSafety(d); });
+    el.append(e, x, b); box.appendChild(el);
+  });
+  box.classList.toggle('hidden', !notes.length);
+}
+
 function render() {
   const d = state.data;
   if (!d) return;
   const info = wxInfo(d.code, d.day);
-  const bk = buddyKindOf(info.kind, d.day);
   const theme = themeOf(info.kind, d.day);
 
-  // theme + sky
   document.body.setAttribute('data-theme', theme);
   const themeKey = theme + '|' + info.kind;
   if (state.theme !== themeKey) { state.theme = themeKey; buildSky(theme, info.kind); }
 
   // hero
-  $('buddy').innerHTML = buddySVG(bk);
-  $('buddy').setAttribute('aria-label', 'Sunny Buddy looks like ' + info.text.toLowerCase());
-  $('bubble').textContent = BUDDY_SAY[bk] + ' ' + info.emoji;
   $('cityName').textContent = d.place.name;
   $('placeLine').textContent = [d.place.region, d.place.country].filter(Boolean).join(', ');
   $('dateLine').textContent = dt(d.time).toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' }) + ' at ' + fmtTime(d.time) + ' (local time)';
@@ -809,16 +1669,12 @@ function render() {
       '</div><div class="h-pop">💧 ' + x.pop + '%</div></div>';
   }).join('');
 
-  // wear + tips
-  $('wear').innerHTML = wearList(d).map(i => '<div><span class="we" aria-hidden="true">' + i.e + '</span><span>' + esc(i.l) + '</span></div>').join('');
-  const tips = tipList(d);
-  $('tips').innerHTML = tips.map(t => '<div class="tipc"><span class="te" aria-hidden="true">' + t.e + '</span><div><b>' + esc(t.t) + '</b><span>' + esc(t.x) + '</span></div></div>').join('');
+  // recommendations + mascot
+  state.reco = buildReco(d);
+  renderReco();
+  renderSafety(d);
 
-  // speech text
-  state.speech = 'Hello! In ' + d.place.name + ' it is ' + cvt(d.temp) + ' degrees ' + (state.unit === 'C' ? 'Celsius' : 'Fahrenheit') +
-    '. ' + info.text + '. ' + BUDDY_SAY[bk] + ' ' + tips[0].t + '. ' + tips[0].x;
-
-  // alert
+  // severe alert
   const al = getAlert(d);
   if (al) {
     $('alertIcon').textContent = al.icon;
@@ -834,6 +1690,11 @@ function render() {
     state.lastAlert = '';
   }
 
+  // facts, sound, world map, chart, map
+  refreshFacts(d);
+  if (Sound.on) { Sound.play(soundSceneOf(d)); updateSoundUI(); }
+  const near = cityNear(d.place); WorldMap.mark(near ? near.id : null);
+  WorldMap.labels();
   updateFavBtn();
   drawChart();
   updateMap();
@@ -872,7 +1733,7 @@ function drawChart() {
   });
 }
 
-/* ---------- map ---------- */
+/* ---------- weather map (Leaflet) ---------- */
 function initMap() {
   if (typeof L === 'undefined') { $('mapCard').classList.add('hidden'); return; }
   state.map = L.map('map', { scrollWheelZoom: false }).setView([20, 0], 3);
@@ -921,7 +1782,7 @@ async function setLayer(name) {
 }
 
 /* =========================================================
-   LOADING A PLACE
+   12. LOADING A PLACE + favorites / recent
    ========================================================= */
 async function loadPlace(place, opts) {
   opts = opts || {};
@@ -934,9 +1795,12 @@ async function loadPlace(place, opts) {
     ]);
     if (my !== state.reqId) return;
     state.data = buildData(place, w, a);
+    if (!opts.quiet) state.preview = null;
     store.set('sb_last', place);
     if (!opts.quiet) { addRecent(place); trackVisit(place); }
+    trackWeather(state.data, wxInfo(state.data.code, state.data.day));
     render();
+    checkBadges();
   } catch (e) {
     if (my === state.reqId && !opts.quiet)
       toast('Oops! I could not reach the clouds. Check your internet and try again. ☁️');
@@ -945,12 +1809,15 @@ async function loadPlace(place, opts) {
   }
 }
 
-/* ---------- recent / favorites / badges ---------- */
 function addRecent(p) {
   const k = placeKey(p);
   state.recent = [p].concat(state.recent.filter(x => placeKey(x) !== k)).slice(0, 6);
   store.set('sb_recent', state.recent);
   renderChips();
+}
+function trackVisit(p) {
+  const k = placeKey(p);
+  if (state.visited.indexOf(k) === -1) { state.visited.push(k); store.set('sb_visited', state.visited); }
 }
 function isFav(p) { return state.fav.some(x => placeKey(x) === placeKey(p)); }
 function toggleFav() {
@@ -995,32 +1862,9 @@ function renderChips() {
     w.appendChild(b); rec.appendChild(w);
   });
 }
-function trackVisit(p) {
-  const k = placeKey(p);
-  if (state.visited.indexOf(k) === -1) {
-    state.visited.push(k); store.set('sb_visited', state.visited);
-    const badge = BADGES.find(b => b.n === state.visited.length);
-    if (badge) setTimeout(() => toast('New badge unlocked: ' + badge.e + ' ' + badge.t + '!'), 900);
-  }
-  renderBadges();
-}
-function renderBadges() {
-  const n = state.visited.length;
-  $('explored').textContent = n ? 'You have explored ' + n + (n === 1 ? ' place' : ' places') + '. Look up more cities to earn badges!' : 'Look up a city to start earning badges!';
-  $('badges').innerHTML = BADGES.map(b =>
-    '<div class="badge' + (n >= b.n ? '' : ' locked') + '"><span class="be" aria-hidden="true">' + b.e + '</span><span>' + esc(b.t) +
-    (n >= b.n ? '' : ' (' + b.n + ' places)') + '</span></div>').join('');
-}
-function showFact(next) {
-  if (next || state.factIdx < 0) {
-    if (state.factIdx < 0) state.factIdx = Math.floor(Date.now() / 86400000) % FACTS.length;
-    else state.factIdx = (state.factIdx + 1) % FACTS.length;
-  }
-  $('factText').textContent = FACTS[state.factIdx];
-}
 
 /* =========================================================
-   SEARCH
+   13. SEARCH + CONTROLS
    ========================================================= */
 const input = $('cityInput'), sug = $('sug');
 let sugTimer, sugItems = [], sugIdx = -1;
@@ -1031,7 +1875,7 @@ function showSug(items) {
   sug.innerHTML = '';
   if (!items.length) {
     const li = document.createElement('li'); li.className = 'none'; li.textContent = 'No cities found. Check the spelling! 🌍'; sug.appendChild(li);
-  } else items.forEach((p, i) => {
+  } else items.forEach(p => {
     const li = document.createElement('li'); li.setAttribute('role', 'option'); li.setAttribute('aria-selected', 'false');
     li.textContent = '📍 ' + placeLabel(p);
     li.addEventListener('mousedown', e => { e.preventDefault(); pick(p); });
@@ -1064,15 +1908,15 @@ input.addEventListener('input', () => {
   }, 300);
 });
 input.addEventListener('keydown', e => {
-  if (e.key === 'ArrowDown' && sugItems.length && !sug.classList.contains('hidden')) { e.preventDefault(); sugIdx = (sugIdx + 1) % sugItems.length; markSug(); }
-  else if (e.key === 'ArrowUp' && sugItems.length && !sug.classList.contains('hidden')) { e.preventDefault(); sugIdx = (sugIdx - 1 + sugItems.length) % sugItems.length; markSug(); }
+  const open = !sug.classList.contains('hidden') && sugItems.length;
+  if (e.key === 'ArrowDown' && open) { e.preventDefault(); sugIdx = (sugIdx + 1) % sugItems.length; markSug(); }
+  else if (e.key === 'ArrowUp' && open) { e.preventDefault(); sugIdx = (sugIdx - 1 + sugItems.length) % sugItems.length; markSug(); }
   else if (e.key === 'Enter') { e.preventDefault(); if (sugIdx >= 0 && sugItems[sugIdx]) pick(sugItems[sugIdx]); else doSearch(); }
   else if (e.key === 'Escape') hideSug();
 });
 input.addEventListener('blur', () => setTimeout(hideSug, 120));
 $('searchBtn').addEventListener('click', doSearch);
 
-/* ---------- GPS ---------- */
 $('gpsBtn').addEventListener('click', () => {
   if (!navigator.geolocation) { toast('This device cannot find your location. Type a city instead! 🗺️'); return; }
   showLoading(true, 'Finding you on the map... 📍');
@@ -1090,11 +1934,10 @@ $('gpsBtn').addEventListener('click', () => {
   }, { timeout: 10000, maximumAge: 600000 });
 });
 
-/* ---------- units, alerts, speech ---------- */
 function setUnit(u) {
   state.unit = u; store.set('sb_unit', u);
   $('unitC').classList.toggle('on', u === 'C'); $('unitF').classList.toggle('on', u === 'F');
-  $('unitC').setAttribute('aria-pressed', u === 'C'); $('unitF').setAttribute('aria-pressed', u === 'F');
+  $('unitC').setAttribute('aria-pressed', String(u === 'C')); $('unitF').setAttribute('aria-pressed', String(u === 'F'));
   render();
 }
 $('unitC').addEventListener('click', () => setUnit('C'));
@@ -1119,36 +1962,71 @@ $('bellBtn').addEventListener('click', async () => {
   store.set('sb_notify', state.notify); updateBell();
 });
 
+/* voice + sound buttons */
 $('speakBtn').addEventListener('click', () => {
-  if (!('speechSynthesis' in window)) { toast('Reading aloud does not work on this device.'); return; }
-  if (!state.speech) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(state.speech);
-  u.rate = 0.95; u.pitch = 1.15;
-  speechSynthesis.speak(u);
+  if (Voice.speaking) { Voice.stop(); return; }
+  if (state.speech) Voice.speak(state.speech);
+});
+$('soundBtn').addEventListener('click', () => {
+  if (!Sound.supported()) { toast('Weather sounds do not work on this device.'); return; }
+  if (Sound.on) { Sound.stop(); updateSoundUI(); return; }
+  if (!state.data) { toast('Wait for the weather to load first! ☁️'); return; }
+  if (Sound.start(soundSceneOf(state.data))) {
+    updateSoundUI(); toast('Tip: ask a grown-up to check the volume. 🔊');
+    const g = state.game; if (!g.sound) { g.sound = true; saveGame(); checkBadges(); }
+  }
+});
+$('vol').addEventListener('input', e => Sound.setVolume(Number(e.target.value) / 100 * 0.8));
+
+/* dress-up buttons */
+document.querySelectorAll('.sc-try button').forEach(b => b.addEventListener('click', () => {
+  const id = b.dataset.sc;
+  if (id === 'live') state.preview = null;
+  else {
+    state.preview = id;
+    const g = state.game;
+    if (g.tried.indexOf(id) < 0) { g.tried.push(id); saveGame(); checkBadges(); }
+  }
+  renderReco();
+}));
+
+/* facts */
+$('dykNext').addEventListener('click', () => { state.dyk.idx++; renderFact(); });
+$('dykRead').addEventListener('click', () => {
+  const l = state.dyk.list; if (!l.length) return;
+  const f = l[state.dyk.idx % l.length];
+  Voice.speak('Did you know? ' + f.t + '. ' + f.x);
 });
 
 document.querySelectorAll('.layers button').forEach(b => b.addEventListener('click', () => setLayer(b.dataset.layer)));
-$('factBtn').addEventListener('click', () => showFact(true));
 window.addEventListener('resize', () => { if (state.map) state.map.invalidateSize(); });
 
 /* refresh every 15 minutes while the page is open */
-setInterval(() => { if (state.data && !document.hidden) loadPlace(state.data.place, { quiet: true }); }, 15 * 60 * 1000);
+setInterval(() => {
+  if (document.hidden) return;
+  if (state.data) loadPlace(state.data.place, { quiet: true });
+  loadWorld();
+}, 15 * 60 * 1000);
 
-/* ---------- offline support (optional sw.js) ---------- */
+/* offline support (optional sw.js) */
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
 
 /* =========================================================
-   START
+   14. START
    ========================================================= */
 function start() {
+  Voice.init();
+  Bear.mount($('bear'));
+  WorldMap.build();
   setUnit(state.unit);
-  updateBell(); renderChips(); renderBadges(); showFact(false);
+  updateBell(); renderChips(); renderQuiz(); renderBadges(); updateSoundUI();
+  checkBadges(true);
   initMap();
   loadPlace(store.get('sb_last', null) ||
     { name: 'Bahawalpur', region: 'Punjab', country: 'Pakistan', lat: 29.3956, lon: 71.6836 });
+  loadWorld();
 }
 // Leaflet and Chart.js load with "defer", so wait until the page has fully loaded.
 if (document.readyState === 'complete') start();
