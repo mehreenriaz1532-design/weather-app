@@ -135,8 +135,6 @@ h2{font-size:1.25rem;font-weight:700;margin-bottom:14px;display:flex;align-items
 /* ---------- hero ---------- */
 .hero{position:relative;display:grid;grid-template-columns:minmax(230px,320px) 1fr;gap:24px;align-items:center;padding:26px}
 .hero-left{display:flex;flex-direction:column;align-items:center;gap:8px}
-.bear{width:min(270px,66vw);aspect-ratio:280/370}
-.bear svg{width:100%;height:100%;overflow:visible;animation:bob 4s ease-in-out infinite;filter:drop-shadow(0 8px 0 rgba(31,42,68,.10))}
 .bubble{position:relative;background:#fff;border:3px solid var(--line);border-radius:22px;padding:10px 16px;font-weight:600;text-align:center}
 .bubble::before{content:"";position:absolute;left:50%;top:-12px;margin-left:-10px;border:10px solid transparent;border-top:0;border-bottom-color:var(--line)}
 .outfit-line{color:var(--sub);font-size:.95rem;text-align:center}
@@ -158,19 +156,108 @@ h2{font-size:1.25rem;font-weight:700;margin-bottom:14px;display:flex;align-items
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 
-/* ---------- Sunny Bear (layered SVG) ---------- */
+/* ---------- The buddy (layered SVG with lots of life) ---------- */
+.bear{position:relative;width:min(340px,82vw);aspect-ratio:400/420;cursor:pointer;-webkit-user-select:none;user-select:none;touch-action:manipulation;border-radius:36px}
+.bear::before{content:"";position:absolute;inset:8% 6% 2%;border-radius:50%;z-index:0;
+  background:radial-gradient(closest-side,rgba(255,255,255,.9),rgba(255,255,255,.4) 62%,rgba(255,255,255,0))}
+.bear svg{position:relative;z-index:1;display:block;width:100%;height:100%;overflow:visible}
+.bear .heart{position:absolute;z-index:3;font-size:28px;pointer-events:none;animation:heartup 1.5s ease-out forwards}
 .bear .layer{opacity:0;transform:translateY(-18px) scale(.85);transform-box:fill-box;transform-origin:center;
   transition:opacity .3s ease,transform .5s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
 .bear .layer.on{opacity:1;transform:none}
-.bear .wig{transform-box:fill-box;transform-origin:50% 100%}
-.bear.pop .wig{animation:wiggle .7s ease}
+
+/* whole-body layers, outer to inner */
+.bear .poke,.bear .dressfx,.bear .bounce{transform-box:fill-box;transform-origin:50% 100%}
+.bear .idle{animation:float 3.6s ease-in-out infinite}
+.bear .bodyg{transform-box:fill-box;transform-origin:50% 100%;animation:breathe 3.6s ease-in-out infinite}
+.bear .headg{transform-box:fill-box;transform-origin:50% 92%;animation:headtilt 7s ease-in-out infinite}
+.bear .shadow{transform-box:fill-box;transform-origin:center;animation:shadow 3.6s ease-in-out infinite}
+.bear.talking .headg{animation:talkhead .45s ease-in-out infinite alternate}
+.bear.jump .poke{animation:jump .75s cubic-bezier(.3,.7,.4,1)}
+.bear.pop .dressfx{animation:dresspop .7s ease}
+
+/* ears */
+.bear .ear-l{transform-box:fill-box;transform-origin:55% 90%;animation:earL 6s ease-in-out infinite}
+.bear .ear-r{transform-box:fill-box;transform-origin:45% 90%;animation:earR 6s ease-in-out 1.6s infinite}
+.bear[data-pal=bunny][data-hold=umbrella] .ear-l{animation:none;transform:rotate(-34deg)}
+.bear[data-pal=bunny][data-hold=umbrella] .ear-r{animation:none;transform:rotate(34deg)}
+.bear .ear{transition:transform .5s ease}
+
+/* face */
 .bear .eyes{transform-box:fill-box;transform-origin:center;animation:blink 5s infinite}
-.bear .flutter{transform-box:fill-box;transform-origin:top left;animation:flutter .5s ease-in-out infinite alternate}
+.bear .etrack{transition:transform .12s ease-out}
+.bear .brow{transform-box:fill-box;transform-origin:center;transition:transform .4s ease}
+.bear[data-mood=cold] .brow-l,.bear[data-mood=hot] .brow-l{transform:rotate(-14deg) translateY(1px)}
+.bear[data-mood=cold] .brow-r,.bear[data-mood=hot] .brow-r{transform:rotate(14deg) translateY(1px)}
+.bear[data-mood=wow] .brow{transform:translateY(-6px)}
+.bear[data-mood=cold] .blush{fill:#8ec5ff}
+.bear .m-open,.bear .m-o,.bear .m-wobble{display:none}
+.bear[data-mood=hot] .m-smile,.bear[data-mood=cold] .m-smile,.bear[data-mood=wow] .m-smile{display:none}
+.bear[data-mood=hot] .m-open,.bear[data-mood=cold] .m-wobble,.bear[data-mood=wow] .m-o{display:inline}
+.bear.talking .m-smile,.bear.talking .m-o,.bear.talking .m-wobble{display:none}
+.bear.talking .m-open{display:inline}
+.bear .m-open{transform-box:fill-box;transform-origin:50% 0}
+.bear[data-mood=hot] .m-open{animation:pant .5s ease-in-out infinite alternate}
+.bear.talking .m-open{animation:talk .24s ease-in-out infinite alternate}
+
+/* arms */
+.bear .armAnim{transform-box:fill-box;transform-origin:50% 6%;transition:transform .5s cubic-bezier(.3,1.4,.5,1)}
+.bear[data-hold=umbrella] .armR .armAnim,.bear[data-hold=kite] .armR .armAnim{transform:rotate(-32deg)}
+.bear.wave .armL .armAnim{animation:wave 2.6s ease-in-out}
+.bear .flutter{transform-box:fill-box;transform-origin:top left;animation:flutter 1.6s ease-in-out infinite alternate}
+.bear[data-fx~=wind] .flutter{animation-duration:.4s}
 .bear .kite-sway{transform-box:fill-box;transform-origin:50% 100%;animation:kite 2.4s ease-in-out infinite alternate}
-@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-4deg)}60%{transform:rotate(4deg)}}
-@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
-@keyframes flutter{from{transform:rotate(-6deg)}to{transform:rotate(12deg)}}
-@keyframes kite{from{transform:rotate(-6deg)}to{transform:rotate(6deg)}}
+
+/* weather reactions */
+.bear[data-fx~=shiver] .bounce{animation:shiver .16s linear infinite}
+.bear[data-fx~=tremble] .bounce{animation:shiver .3s linear infinite}
+.bear[data-fx~=wind] .bounce{animation:sway 2.4s ease-in-out infinite}
+
+/* particles */
+.bear .fx{opacity:0;transition:opacity .5s}
+.bear[data-fx~=rain] .fx-rain,.bear[data-fx~=snow] .fx-snow,.bear[data-fx~=wind] .fx-wind,
+.bear[data-fx~=sparkle] .fx-sparkle,.bear[data-fx~=sweat] .fx-sweat,.bear[data-fx~=breath] .fx-breath{opacity:1}
+.bear .rd{stroke:#74c0fc;stroke-width:3.2;stroke-linecap:round;animation:rainfall .9s linear infinite}
+.bear .rip{fill:none;stroke:#a5d8ff;stroke-width:2.5;transform-box:fill-box;transform-origin:center;animation:ripple 1.6s ease-out infinite}
+.bear .sf{fill:#fff;stroke:#b7d7f5;stroke-width:1;animation:snowdrift 7s linear infinite}
+.bear .wl{fill:none;stroke:#8fb8ff;stroke-width:4.5;stroke-linecap:round;opacity:0;animation:windline 2.4s linear infinite}
+.bear .lf{animation:leaf 5.5s linear infinite}
+.bear .sd{animation:sweat 2.4s ease-in infinite}
+.bear .pf{transform-box:fill-box;transform-origin:center;animation:puff 2.4s ease-out infinite}
+.bear .sp{transform-box:fill-box;transform-origin:center;animation:twinkle2 2.6s ease-in-out infinite}
+
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes breathe{0%,100%{transform:scale(1,1)}50%{transform:scale(1.015,1.03)}}
+@keyframes headtilt{0%,100%{transform:rotate(-1.6deg)}50%{transform:rotate(1.6deg)}}
+@keyframes shadow{0%,100%{transform:scale(1)}50%{transform:scale(.9)}}
+@keyframes talkhead{from{transform:rotate(-2deg) translateY(0)}to{transform:rotate(2deg) translateY(-3px)}}
+@keyframes jump{0%{transform:scale(1,1)}15%{transform:scale(1.1,.86)}42%{transform:translateY(-38px) scale(.94,1.08)}72%{transform:translateY(0) scale(1.08,.9)}100%{transform:scale(1,1)}}
+@keyframes dresspop{0%{transform:scale(1)}30%{transform:scale(1.07,.93) rotate(-2deg)}60%{transform:scale(.97,1.04) rotate(2deg)}100%{transform:scale(1)}}
+@keyframes earL{0%,78%,100%{transform:rotate(0)}82%{transform:rotate(-10deg)}86%{transform:rotate(5deg)}90%{transform:rotate(-4deg)}}
+@keyframes earR{0%,78%,100%{transform:rotate(0)}82%{transform:rotate(10deg)}86%{transform:rotate(-5deg)}90%{transform:rotate(4deg)}}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+@keyframes talk{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
+@keyframes pant{from{transform:scaleY(.6)}to{transform:scaleY(1)}}
+@keyframes wave{0%{transform:rotate(0)}12%{transform:rotate(140deg)}24%{transform:rotate(168deg)}36%{transform:rotate(136deg)}48%{transform:rotate(168deg)}60%{transform:rotate(136deg)}72%{transform:rotate(168deg)}88%{transform:rotate(140deg)}100%{transform:rotate(0)}}
+@keyframes flutter{from{transform:rotate(-5deg)}to{transform:rotate(12deg)}}
+@keyframes kite{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+@keyframes shiver{0%{transform:translateX(-1.6px) rotate(-.6deg)}50%{transform:translateX(1.6px) rotate(.6deg)}100%{transform:translateX(-1.6px) rotate(-.6deg)}}
+@keyframes sway{0%,100%{transform:rotate(-2.6deg)}50%{transform:rotate(2.6deg)}}
+@keyframes rainfall{to{transform:translateY(430px)}}
+@keyframes ripple{0%{transform:scale(.3);opacity:1}100%{transform:scale(1.4);opacity:0}}
+@keyframes snowdrift{0%{transform:translate(0,0)}50%{transform:translate(14px,220px)}100%{transform:translate(-6px,440px)}}
+@keyframes windline{0%{transform:translateX(0);opacity:0}15%{opacity:.85}85%{opacity:.85}100%{transform:translateX(460px);opacity:0}}
+@keyframes leaf{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(470px,40px) rotate(720deg)}}
+@keyframes sweat{0%{transform:translateY(0);opacity:0}20%{opacity:1}100%{transform:translateY(38px);opacity:0}}
+@keyframes puff{0%{transform:translate(0,0) scale(.4);opacity:.95}100%{transform:translate(36px,-26px) scale(1.7);opacity:0}}
+@keyframes twinkle2{0%,100%{transform:scale(.5);opacity:0}50%{transform:scale(1.15);opacity:1}}
+@keyframes heartup{0%{opacity:0;transform:translateY(0) scale(.5)}15%{opacity:1}100%{opacity:0;transform:translate(var(--hx,0),-100px) scale(1.25)}}
+
+/* choose your buddy */
+.pals{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;margin-top:2px}
+.pals .lbl{font-weight:600;width:100%;text-align:center;color:var(--sub);font-size:.95rem}
+.pals button{border:2px solid var(--line);background:#fff;border-radius:999px;min-height:42px;padding:0 14px;cursor:pointer;font-weight:600}
+.pals button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
 
 /* ---------- tiles ---------- */
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:20px}
@@ -362,9 +449,15 @@ footer a{color:inherit;font-weight:600}
         <p id="loadingText">Asking the clouds...</p>
       </div>
       <div class="hero-left">
-        <div id="bear" class="bear" role="img" aria-label="Sunny Bear, the weather bear"></div>
-        <p id="bubble" class="bubble">Hi! I am Sunny Bear.</p>
+        <div id="bear" class="bear" role="button" tabindex="0" aria-label="Sunny Bear. Tap to say hi!"></div>
+        <p id="bubble" class="bubble">Hi! Tap me to say hello!</p>
         <p id="outfitLine" class="outfit-line"></p>
+        <div class="pals" role="group" aria-label="Choose your buddy">
+          <span class="lbl">Choose your buddy:</span>
+          <button type="button" data-pal="bear" aria-pressed="true">🐻 Bear</button>
+          <button type="button" data-pal="panda" aria-pressed="false">🐼 Panda</button>
+          <button type="button" data-pal="bunny" aria-pressed="false">🐰 Bunny</button>
+        </div>
       </div>
       <div class="hero-right">
         <p id="dateLine" class="date">--</p>
@@ -407,8 +500,8 @@ footer a{color:inherit;font-weight:600}
         </div>
         <span id="scFlag" class="sc-flag hidden">Trying on an outfit</span>
       </div>
-      <div class="sc-try" role="group" aria-label="Dress up Sunny Bear">
-        <span class="lbl">🎩 Dress up Sunny Bear:</span>
+      <div class="sc-try" role="group" aria-label="Dress up your buddy">
+        <span class="lbl" id="tryLbl">🎩 Dress up Sunny Bear:</span>
         <button type="button" data-sc="hot" aria-pressed="false">☀️ Hot</button>
         <button type="button" data-sc="rainy" aria-pressed="false">🌧️ Rainy</button>
         <button type="button" data-sc="cold" aria-pressed="false">❄️ Cold</button>
@@ -568,6 +661,7 @@ function loadGame() {
 
 const state = {
   unit: store.get('sb_unit', 'C'),
+  pal: store.get('sb_pal', 'bear'),
   fav: store.get('sb_fav', []),
   recent: store.get('sb_recent', []),
   visited: store.get('sb_visited', []),
@@ -909,14 +1003,23 @@ function airInfo(a) {
 }
 
 /* =========================================================
-   4. SUNNY BEAR - layered SVG + dressing logic
+   4. THE BUDDY - a layered, animated SVG character
    ---------------------------------------------------------
-   Every piece of clothing is a <g class="layer" data-layer="...">.
-   Bear.dress(['raincoat','hood','boots']) just switches the
-   ".on" class, so CSS animates the outfit in and out.
-   Some clothes have 2 groups (body part + sleeves) so they
-   sit at the right depth (sleeves in front of the arms).
+   Three friends share one skeleton (PALS = colors + ear shape).
+   Every piece of clothing is a <g class="layer" data-layer="...">
+   and is clipped to the body / arm shape, so it always fits.
+   Bear.dress() switches layers, the mood (face) and the FX
+   (rain, snow, sweat, breath...) with data-attributes, and CSS
+   does all the animation.
    ========================================================= */
+const PALS = {
+  bear:  { name: 'Sunny Bear', em: '🐻', ears: 'round', fur: ['#f2c088', '#cc8c4d', '#9c5f2f'], belly: ['#fff2da', '#f3cd98'], muzzle: ['#fff2da', '#f1c690'],
+           earFill: null, earIn: '#f4c896', limb: null, nose: '#3a2216', line: '#3a2216', brow: '#7a4a24', pad: '#f4c896', patch: null, cheek: '#ff8fa3', teeth: false },
+  panda: { name: 'Panda Pip', em: '🐼', ears: 'round', fur: ['#ffffff', '#f2f4f8', '#cdd4e0'], belly: ['#ffffff', '#eef1f6'], muzzle: ['#ffffff', '#e9edf3'],
+           earFill: '#2d3142', earIn: '#4b5068', limb: ['#5a6180', '#2d3142', '#1b1e2c'], nose: '#1b1e2c', line: '#2d3142', brow: '#2d3142', pad: '#5a6180', patch: '#2d3142', cheek: '#ff9db4', teeth: false },
+  bunny: { name: 'Bunny Bibi', em: '🐰', ears: 'long', fur: ['#fffafc', '#fbe1eb', '#ecb1c8'], belly: ['#ffffff', '#fdeef4'], muzzle: ['#ffffff', '#fdeef4'],
+           earFill: null, earIn: '#ffb3cc', limb: null, nose: '#ff6f9f', line: '#a4415f', brow: '#d48aa8', pad: '#ffc2d6', patch: null, cheek: '#ff8fb0', teeth: true }
+};
 const LAYER_NAMES = { tee:'T-shirt', shorts:'shorts', sunglasses:'sunglasses', sunhat:'sun hat', raincoat:'raincoat',
   boots:'rain boots', umbrella:'umbrella', jacket:'winter jacket', beanie:'beanie', scarf:'scarf',
   mittens:'mittens', windbreaker:'windbreaker', kite:'kite' };
@@ -924,118 +1027,235 @@ const joinList = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' 
 const outfitText = layers => { const n = layers.map(l => LAYER_NAMES[l]).filter(Boolean); return n.length ? joinList(n) : 'just my fur'; };
 
 const Bear = {
-  el: null, key: '',
+  el: null, track: null, pal: 'bear', key: '', baseBubble: '', bubbleT: null, waveT: null,
+
   svg() {
-    const brown = '#c98a4b', dark = '#a8672f', tan = '#f2c48f', ink = '#1f2a44';
-    const L = (name, inner) => '<g class="layer" data-layer="' + name + '">' + inner + '</g>';
-    const sleeves = (fill, stroke) =>
-      '<ellipse cx="62" cy="212" rx="19" ry="36" transform="rotate(18 62 212)" fill="' + fill + '" stroke="' + stroke + '" stroke-width="4"/>' +
-      '<ellipse cx="178" cy="212" rx="19" ry="36" transform="rotate(-18 178 212)" fill="' + fill + '" stroke="' + stroke + '" stroke-width="4"/>';
-    const collar = (fill, stroke) => '<path d="M76 152 Q120 180 164 152 L170 176 Q120 198 70 176Z" fill="' + fill + '" stroke="' + stroke + '" stroke-width="3" stroke-linejoin="round"/>';
+    const P = PALS[this.pal], limb = P.limb || P.fur;
+    const L = (n, inner) => '<g class="layer" data-layer="' + n + '">' + inner + '</g>';
+    const stops = a => a.map((c, i) => '<stop offset="' + (i / (a.length - 1)).toFixed(2) + '" stop-color="' + c + '"/>').join('');
+    const rg = (id, cx, cy, r, a) => '<radialGradient id="' + id + '" cx="' + cx + '%" cy="' + cy + '%" r="' + r + '%">' + stops(a) + '</radialGradient>';
+    const lg = (id, a) => '<linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1">' + stops(a) + '</linearGradient>';
+    const pr = i => ((i * 9301 + 49297) % 233280) / 233280;
 
-    return '<svg viewBox="-20 -50 280 370" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g class="wig">' +
+    const defs = '<defs>' +
+      rg('furG', 38, 28, 85, P.fur) + rg('limbG', 38, 28, 85, limb) + rg('bellyG', 50, 35, 75, P.belly) + rg('muzG', 50, 30, 80, P.muzzle) +
+      rg('eyeG', 35, 30, 80, ['#56618a', '#1b2238', '#0b0f1e']) +
+      rg('shadeG', 50, 40, 62, ['rgba(20,10,30,0)', 'rgba(20,10,30,0)', 'rgba(20,10,30,.26)']) +
+      lg('teeG', ['#6cc0ff', '#2f8fe8']) + lg('jacketG', ['#5b95ff', '#2b59d6']) + lg('rainG', ['#ffe680', '#fcc419']) +
+      lg('windG', ['#74e08a', '#37b24d']) + lg('shortsG', ['#ffb95c', '#ff8a1f']) + lg('beanieG', ['#f25757', '#c92a2a']) + lg('scarfG', ['#ff8585', '#e03131']) +
+      '<clipPath id="cBody"><ellipse cx="150" cy="245" rx="70" ry="72"/></clipPath>' +
+      '<clipPath id="cArm"><rect x="-15" y="0" width="30" height="66" rx="15"/></clipPath></defs>';
 
-    /* --- behind the bear --- */
-    L('umbrella',
-      '<line x1="150" y1="24" x2="187" y2="240" stroke="#6b4a2a" stroke-width="6" stroke-linecap="round"/>' +
-      '<path d="M64 26 Q150 -70 236 26 Q215 12 193 26 Q172 12 150 26 Q128 12 107 26 Q85 12 64 26Z" fill="#ff6b9d" stroke="#e64980" stroke-width="4" stroke-linejoin="round"/>' +
-      '<path d="M150 -22 Q118 4 107 26 M150 -22 Q182 4 193 26" fill="none" stroke="#e64980" stroke-width="3"/>') +
-    L('kite',
-      '<line x1="10" y1="34" x2="50" y2="246" stroke="#868e96" stroke-width="2"/>' +
-      '<g class="kite-sway"><polygon points="10,-34 36,-6 10,34 -16,-6" fill="#ff6b9d" stroke="#e64980" stroke-width="3" stroke-linejoin="round"/>' +
-      '<path d="M10 -34 L10 34 M-16 -6 L36 -6" stroke="#fff" stroke-width="2"/>' +
-      '<path d="M10 34 q-10 12 0 22 t0 22" fill="none" stroke="#ffd43b" stroke-width="4" stroke-dasharray="6 5"/></g>') +
+    /* ---- ears ---- */
+    const ears = P.ears === 'long'
+      ? '<g class="ear ear-l"><g transform="rotate(-12 112 60)"><ellipse cx="112" cy="4" rx="25" ry="62" fill="url(#furG)"/><ellipse cx="112" cy="8" rx="13" ry="46" fill="' + P.earIn + '"/></g></g>' +
+        '<g class="ear ear-r"><g transform="rotate(12 188 60)"><ellipse cx="188" cy="4" rx="25" ry="62" fill="url(#furG)"/><ellipse cx="188" cy="8" rx="13" ry="46" fill="' + P.earIn + '"/></g></g>'
+      : '<g class="ear ear-l"><circle cx="84" cy="62" r="29" fill="' + (P.earFill || 'url(#furG)') + '"/><circle cx="86" cy="65" r="16" fill="' + P.earIn + '"/></g>' +
+        '<g class="ear ear-r"><circle cx="216" cy="62" r="29" fill="' + (P.earFill || 'url(#furG)') + '"/><circle cx="214" cy="65" r="16" fill="' + P.earIn + '"/></g>';
 
-    /* --- body --- */
-    '<ellipse cx="120" cy="225" rx="58" ry="64" fill="' + brown + '"/>' +
-    '<ellipse cx="120" cy="232" rx="38" ry="44" fill="' + tan + '"/>' +
-    L('shorts',
-      '<path d="M68 256 Q120 274 172 256 L176 284 Q120 296 64 284Z" fill="#ffa94d" stroke="#f76707" stroke-width="3" stroke-linejoin="round"/>' +
-      '<path d="M120 268 V292" stroke="#f76707" stroke-width="3"/>') +
-    /* feet */
-    '<ellipse cx="88" cy="292" rx="24" ry="17" fill="' + brown + '"/><ellipse cx="88" cy="294" rx="10" ry="7" fill="' + tan + '"/>' +
-    '<ellipse cx="152" cy="292" rx="24" ry="17" fill="' + brown + '"/><ellipse cx="152" cy="294" rx="10" ry="7" fill="' + tan + '"/>' +
-    L('boots',
-      '<ellipse cx="88" cy="294" rx="26" ry="19" fill="#2f9e44" stroke="#2b8a3e" stroke-width="3"/><rect x="68" y="266" width="40" height="18" rx="8" fill="#37b24d" stroke="#2b8a3e" stroke-width="3"/>' +
-      '<ellipse cx="152" cy="294" rx="26" ry="19" fill="#2f9e44" stroke="#2b8a3e" stroke-width="3"/><rect x="132" y="266" width="40" height="18" rx="8" fill="#37b24d" stroke="#2b8a3e" stroke-width="3"/>') +
+    /* ---- face ---- */
+    const patches = P.patch
+      ? '<ellipse cx="112" cy="122" rx="22" ry="27" transform="rotate(24 112 122)" fill="' + P.patch + '"/><ellipse cx="188" cy="122" rx="22" ry="27" transform="rotate(-24 188 122)" fill="' + P.patch + '"/>' : '';
+    const teeth = P.teeth ? '<rect x="143" y="163" width="14" height="13" rx="3.5" fill="#fff" stroke="#e7b8c9" stroke-width="1.5"/><path d="M150 164 V175" stroke="#e7b8c9" stroke-width="1.2"/>' : '';
+    const face =
+      '<ellipse cx="150" cy="154" rx="40" ry="30" fill="url(#muzG)"/>' +
+      '<ellipse class="blush" cx="80" cy="150" rx="15" ry="9.5" fill="' + P.cheek + '" opacity=".5"/><ellipse class="blush" cx="220" cy="150" rx="15" ry="9.5" fill="' + P.cheek + '" opacity=".5"/>' +
+      '<path d="M137 136 Q150 127 163 136 Q160 148 150 150 Q140 148 137 136Z" fill="' + P.nose + '"/><ellipse cx="144" cy="134" rx="5.5" ry="2.6" fill="#fff" opacity=".55"/>' +
+      '<path d="M150 150 V158" stroke="' + P.line + '" stroke-width="3.5" stroke-linecap="round"/>' + teeth +
+      '<g class="mouth">' +
+        '<path class="m-smile" d="M131 160 Q140 174 150 161 Q160 174 169 160" fill="none" stroke="' + P.line + '" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '<g class="m-open"><path d="M133 158 Q150 194 167 158Z" fill="#8f2d45" stroke="' + P.line + '" stroke-width="3" stroke-linejoin="round"/><ellipse cx="150" cy="178" rx="10" ry="6.5" fill="#ff8fa3"/></g>' +
+        '<ellipse class="m-o" cx="150" cy="169" rx="7.5" ry="9.5" fill="#8f2d45" stroke="' + P.line + '" stroke-width="3"/>' +
+        '<path class="m-wobble" d="M133 168 q4.5 -8 9 0 t9 0 t9 0 t9 0" fill="none" stroke="' + P.line + '" stroke-width="4" stroke-linecap="round"/>' +
+      '</g>' +
+      '<path class="brow brow-l" d="M96 96 Q112 85 128 95" fill="none" stroke="' + P.brow + '" stroke-width="5.5" stroke-linecap="round"/>' +
+      '<path class="brow brow-r" d="M172 95 Q188 85 204 96" fill="none" stroke="' + P.brow + '" stroke-width="5.5" stroke-linecap="round"/>' +
+      '<g class="eyes"><g class="etrack">' +
+        '<ellipse cx="112" cy="120" rx="14.5" ry="18" fill="url(#eyeG)"/><ellipse cx="188" cy="120" rx="14.5" ry="18" fill="url(#eyeG)"/>' +
+        '<circle cx="107" cy="112" r="5.8" fill="#fff"/><circle cx="183" cy="112" r="5.8" fill="#fff"/>' +
+        '<circle cx="118" cy="128" r="2.9" fill="#fff" opacity=".9"/><circle cx="194" cy="128" r="2.9" fill="#fff" opacity=".9"/>' +
+      '</g></g>';
 
-    /* --- clothes on the torso --- */
-    L('tee',
-      '<path d="M76 178 Q120 166 164 178 L172 262 Q120 276 68 262Z" fill="#4dabf7" stroke="#1c7ed6" stroke-width="4" stroke-linejoin="round"/>' +
-      '<text x="120" y="234" text-anchor="middle" font-size="28">⭐</text>') +
-    L('windbreaker',
-      '<path d="M62 176 Q120 158 178 176 L188 270 Q120 288 52 270Z" fill="#51cf66" stroke="#2f9e44" stroke-width="4" stroke-linejoin="round"/>' +
-      '<path d="M72 190 L64 266 M168 190 L176 266" stroke="#fff" stroke-width="5" stroke-linecap="round"/>' +
-      '<path d="M120 178 V284" stroke="#2f9e44" stroke-width="3"/>' + collar('#40c057', '#2f9e44')) +
-    L('jacket',
-      '<path d="M62 176 Q120 158 178 176 L188 270 Q120 288 52 270Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="4" stroke-linejoin="round"/>' +
-      '<path d="M58 206 Q120 222 182 206 M56 238 Q120 254 184 238" fill="none" stroke="#1d4ed8" stroke-width="3"/>' +
-      '<path d="M120 178 V284" stroke="#dbe4ff" stroke-width="3"/>' + collar('#2563eb', '#1d4ed8')) +
-    L('raincoat',
-      '<path d="M60 176 Q120 158 180 176 L190 274 Q120 292 50 274Z" fill="#ffd43b" stroke="#f59f00" stroke-width="4" stroke-linejoin="round"/>' +
-      '<path d="M120 180 V284" stroke="#f59f00" stroke-width="3"/>' +
-      '<circle cx="120" cy="205" r="5" fill="#f59f00"/><circle cx="120" cy="232" r="5" fill="#f59f00"/><circle cx="120" cy="259" r="5" fill="#f59f00"/>' +
-      collar('#fcc419', '#f59f00')) +
+    /* ---- torso clothes (clipped to the body so they always fit) ---- */
+    const clip = inner => '<g clip-path="url(#cBody)">' + inner + '</g>';
+    const torso =
+      L('tee', clip('<rect x="70" y="196" width="160" height="106" fill="url(#teeG)"/><path d="M70 296 Q150 312 230 296" fill="none" stroke="#1c7ed6" stroke-width="5"/>' +
+        '<path d="M96 210 Q118 236 100 270 M204 210 Q182 236 200 270" fill="none" stroke="#1c7ed6" stroke-opacity=".18" stroke-width="6" stroke-linecap="round"/>' +
+        '<path d="M150 246 L155 257.1 L167.1 258.4 L158.1 266.6 L160.6 278.6 L150 272.5 L139.4 278.6 L141.9 266.6 L132.9 258.4 L145 257.1Z" fill="#ffd43b" stroke="#f59f00" stroke-width="2.5" stroke-linejoin="round"/>')) +
+      L('shorts', clip('<path d="M60 266 Q150 284 240 266 V340 H60Z" fill="url(#shortsG)"/><path d="M60 266 Q150 284 240 266" fill="none" stroke="#e8590c" stroke-width="6"/>' +
+        '<path d="M150 280 V332" stroke="#e8590c" stroke-width="4"/><circle cx="150" cy="276" r="4.5" fill="#ffd8a8"/>')) +
+      L('windbreaker', clip('<rect x="70" y="196" width="160" height="116" fill="url(#windG)"/><path d="M100 200 L94 310 M200 200 L206 310" stroke="#fff" stroke-width="7" stroke-linecap="round"/>' +
+        '<path d="M150 214 V312" stroke="#2b8a3e" stroke-width="3.5"/><rect x="146" y="238" width="8" height="14" rx="3" fill="#ffd43b"/>' +
+        '<path d="M110 214 Q150 240 190 214" fill="none" stroke="#2b8a3e" stroke-width="7" stroke-linecap="round"/>')) +
+      L('jacket', clip('<rect x="70" y="196" width="160" height="116" fill="url(#jacketG)"/>' +
+        '<path d="M70 236 Q150 254 230 236 M70 266 Q150 284 230 266 M70 296 Q150 314 230 296" fill="none" stroke="#1b3f9c" stroke-width="4"/>' +
+        '<path d="M150 214 V312" stroke="#dbe4ff" stroke-width="3.5"/><rect x="146" y="238" width="8" height="15" rx="3" fill="#ffd43b"/>')) +
+      L('raincoat', clip('<rect x="70" y="196" width="160" height="120" fill="url(#rainG)"/><path d="M150 214 V316" stroke="#e8a800" stroke-width="3.5"/>' +
+        '<circle cx="150" cy="238" r="5.5" fill="#e8a800"/><circle cx="150" cy="264" r="5.5" fill="#e8a800"/><circle cx="150" cy="290" r="5.5" fill="#e8a800"/>' +
+        '<path d="M92 268 H126 V296 H92Z M174 268 H208 V296 H174Z" fill="none" stroke="#e8a800" stroke-width="3.5" stroke-linejoin="round"/>' +
+        '<path d="M70 306 Q150 322 230 306" fill="none" stroke="#e8a800" stroke-width="5"/>'));
 
-    /* --- arms, then sleeves on top of the arms --- */
-    '<ellipse cx="62" cy="212" rx="16" ry="34" transform="rotate(18 62 212)" fill="' + brown + '"/>' +
-    '<ellipse cx="178" cy="212" rx="16" ry="34" transform="rotate(-18 178 212)" fill="' + brown + '"/>' +
-    L('tee', '<ellipse cx="66" cy="192" rx="18" ry="15" transform="rotate(18 66 192)" fill="#4dabf7" stroke="#1c7ed6" stroke-width="4"/>' +
-             '<ellipse cx="174" cy="192" rx="18" ry="15" transform="rotate(-18 174 192)" fill="#4dabf7" stroke="#1c7ed6" stroke-width="4"/>') +
-    L('windbreaker', sleeves('#51cf66', '#2f9e44')) +
-    L('jacket', sleeves('#3b82f6', '#1d4ed8')) +
-    L('raincoat', sleeves('#ffd43b', '#f59f00')) +
-    '<circle cx="51" cy="246" r="13" fill="' + brown + '"/><circle cx="189" cy="246" r="13" fill="' + brown + '"/>' +
-    L('mittens',
-      '<circle cx="51" cy="246" r="15" fill="#ffa94d" stroke="#f76707" stroke-width="3"/><circle cx="38" cy="237" r="7" fill="#ffa94d" stroke="#f76707" stroke-width="3"/>' +
-      '<circle cx="189" cy="246" r="15" fill="#ffa94d" stroke="#f76707" stroke-width="3"/><circle cx="202" cy="237" r="7" fill="#ffa94d" stroke="#f76707" stroke-width="3"/>') +
+    /* ---- feet + boots ---- */
+    const foot = x => '<ellipse cx="' + x + '" cy="306" rx="31" ry="20" fill="url(#limbG)"/><ellipse cx="' + x + '" cy="311" rx="15" ry="9" fill="' + P.pad + '"/>' +
+      '<circle cx="' + (x - 12) + '" cy="298" r="4.6" fill="' + P.pad + '"/><circle cx="' + x + '" cy="295" r="4.6" fill="' + P.pad + '"/><circle cx="' + (x + 12) + '" cy="298" r="4.6" fill="' + P.pad + '"/>';
+    const boot = x => '<ellipse cx="' + x + '" cy="309" rx="35" ry="22" fill="#37b24d"/><rect x="' + (x - 27) + '" y="282" width="54" height="26" rx="11" fill="#40c057"/>' +
+      '<rect x="' + (x - 30) + '" y="277" width="60" height="13" rx="6.5" fill="#2f9e44"/><path d="M' + (x - 18) + ' 296 V304" stroke="#fff" stroke-opacity=".45" stroke-width="4" stroke-linecap="round"/>';
 
-    /* --- head --- */
-    '<circle cx="80" cy="52" r="22" fill="' + brown + '"/><circle cx="80" cy="52" r="12" fill="' + tan + '"/>' +
-    '<circle cx="160" cy="52" r="22" fill="' + brown + '"/><circle cx="160" cy="52" r="12" fill="' + tan + '"/>' +
-    '<circle cx="120" cy="100" r="62" fill="' + brown + '"/>' +
-    '<ellipse cx="120" cy="120" rx="28" ry="22" fill="' + tan + '"/>' +
-    '<ellipse cx="120" cy="108" rx="9" ry="6" fill="#4a2c1a"/>' +
-    '<path d="M120 114 V124 M108 124 Q120 134 132 124" fill="none" stroke="#4a2c1a" stroke-width="3.5" stroke-linecap="round"/>' +
-    '<g class="eyes"><circle cx="96" cy="88" r="6.5" fill="' + ink + '"/><circle cx="144" cy="88" r="6.5" fill="' + ink + '"/>' +
-    '<circle cx="98" cy="86" r="2.2" fill="#fff"/><circle cx="146" cy="86" r="2.2" fill="#fff"/></g>' +
-    '<circle cx="78" cy="112" r="8" fill="#ff8fa3" opacity=".55"/><circle cx="162" cy="112" r="8" fill="#ff8fa3" opacity=".55"/>' +
+    /* ---- arms (sleeves and mittens live inside, so they move with the arm) ---- */
+    const sleeve = (g, cuff) => '<g clip-path="url(#cArm)"><rect x="-18" y="-4" width="36" height="54" fill="url(#' + g + ')"/><rect x="-18" y="41" width="36" height="9" fill="' + cuff + '"/></g>';
+    const arm = side => {
+      const left = side === 'L', th = left ? -17 : 17;
+      return '<g transform="translate(' + (left ? 92 : 208) + ' 212) rotate(' + (left ? 14 : -14) + ')"><g class="arm arm' + side + '"><g class="armAnim">' +
+        '<rect x="-15" y="0" width="30" height="66" rx="15" fill="url(#limbG)"/><circle cx="0" cy="59" r="17" fill="url(#limbG)"/><ellipse cx="0" cy="63" rx="8" ry="6" fill="' + P.pad + '"/>' +
+        L('tee', '<g clip-path="url(#cArm)"><rect x="-18" y="-4" width="36" height="31" fill="url(#teeG)"/><rect x="-18" y="22" width="36" height="5" fill="#1c7ed6"/></g>') +
+        L('windbreaker', sleeve('windG', '#2b8a3e')) + L('jacket', sleeve('jacketG', '#1b3f9c')) + L('raincoat', sleeve('rainG', '#e8a800')) +
+        L('mittens', '<circle cx="' + th + '" cy="52" r="8.5" fill="#ffa94d" stroke="#f76707" stroke-width="3"/><circle cx="0" cy="60" r="20" fill="#ffa94d" stroke="#f76707" stroke-width="3"/><rect x="-17" y="38" width="34" height="10" rx="5" fill="#e8590c"/>') +
+        '</g></g></g>';
+    };
 
-    /* --- on top of the head --- */
-    L('scarf',
-      '<path d="M72 152 Q120 176 168 152 L172 172 Q120 196 68 172Z" fill="#ff6b6b" stroke="#e03131" stroke-width="3" stroke-linejoin="round"/>' +
-      '<g class="flutter"><path d="M146 176 L166 176 L170 232 Q157 242 144 232Z" fill="#ff6b6b" stroke="#e03131" stroke-width="3" stroke-linejoin="round"/>' +
-      '<path d="M146 200 H168 M146 214 H169" stroke="#fff" stroke-width="3"/></g>') +
-    L('sunglasses',
-      '<rect x="80" y="80" width="32" height="22" rx="9" fill="' + ink + '"/><rect x="128" y="80" width="32" height="22" rx="9" fill="' + ink + '"/>' +
-      '<rect x="110" y="86" width="20" height="5" fill="' + ink + '"/><path d="M80 88 L64 84 M160 88 L176 84" stroke="' + ink + '" stroke-width="4" stroke-linecap="round"/>' +
-      '<path d="M86 86 L94 86 M134 86 L142 86" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"/>') +
-    L('hood',
-      '<path d="M52 104 Q46 16 120 14 Q194 16 188 104 Q172 64 120 60 Q68 64 52 104Z" fill="#ffd43b" stroke="#f59f00" stroke-width="4" stroke-linejoin="round"/>') +
-    L('beanie',
-      '<path d="M62 76 Q60 14 120 12 Q180 14 178 76 Q120 62 62 76Z" fill="#e03131" stroke="#c92a2a" stroke-width="3" stroke-linejoin="round"/>' +
-      '<rect x="58" y="52" width="124" height="22" rx="11" fill="#c92a2a"/><circle cx="120" cy="10" r="13" fill="#fff" stroke="#dee2e6" stroke-width="2"/>') +
-    L('sunhat',
-      '<ellipse cx="120" cy="58" rx="88" ry="16" fill="#f4d06f" stroke="#d9a93a" stroke-width="3"/>' +
-      '<path d="M76 58 Q76 12 120 12 Q164 12 164 58Z" fill="#f7dc8a" stroke="#d9a93a" stroke-width="3" stroke-linejoin="round"/>' +
-      '<rect x="76" y="44" width="88" height="12" fill="#ff6b6b"/>') +
-    '</g></svg>';
+    /* ---- head wear ---- */
+    const headwear =
+      L('hood', '<path d="M62 128 Q52 30 150 28 Q248 30 238 128" fill="none" stroke="#f59f00" stroke-width="30" stroke-linecap="round"/><path d="M62 128 Q52 30 150 28 Q248 30 238 128" fill="none" stroke="url(#rainG)" stroke-width="24" stroke-linecap="round"/>' +
+        '<path d="M100 176 Q90 196 96 206 M200 176 Q210 196 204 206" fill="none" stroke="#e8a800" stroke-width="3"/><circle cx="96" cy="208" r="5" fill="#fff"/><circle cx="204" cy="208" r="5" fill="#fff"/>') +
+      L('beanie', '<path d="M64 96 C60 26 108 14 150 14 C192 14 240 26 236 96 C200 82 100 82 64 96Z" fill="url(#beanieG)"/>' +
+        '<path d="M102 84 Q96 44 112 20 M130 80 Q128 42 136 16 M170 80 Q172 42 164 16 M198 84 Q204 44 188 20" fill="none" stroke="#8f1d1d" stroke-opacity=".35" stroke-width="4" stroke-linecap="round"/>' +
+        '<rect x="56" y="70" width="188" height="30" rx="15" fill="#c92a2a"/><path d="M76 74 V96 M96 74 V96 M116 74 V96 M136 74 V96 M156 74 V96 M176 74 V96 M196 74 V96 M216 74 V96 M236 76 V94" stroke="#8f1d1d" stroke-opacity=".35" stroke-width="3"/>' +
+        '<circle cx="150" cy="10" r="15" fill="#fff"/><circle cx="138" cy="6" r="9" fill="#fff"/><circle cx="163" cy="7" r="9" fill="#fff"/><circle cx="150" cy="2" r="9" fill="#f1f3f5"/>') +
+      L('sunhat', '<ellipse cx="150" cy="78" rx="112" ry="22" fill="#f1cb63" stroke="#d9a93a" stroke-width="3"/><path d="M90 78 Q88 14 150 14 Q212 14 210 78Z" fill="#f8dd8e" stroke="#d9a93a" stroke-width="3" stroke-linejoin="round"/>' +
+        '<path d="M90 64 Q150 78 210 64 V76 Q150 90 90 76Z" fill="#ff6b6b"/><path d="M72 84 Q150 100 228 84" fill="none" stroke="#d9a93a" stroke-opacity=".5" stroke-width="3"/>') +
+      L('sunglasses', '<path d="M88 120 H68 M212 120 H232" stroke="#1f2a44" stroke-width="6" stroke-linecap="round"/>' +
+        '<rect x="84" y="98" width="56" height="44" rx="19" fill="#1f2a44"/><rect x="160" y="98" width="56" height="44" rx="19" fill="#1f2a44"/><path d="M138 112 Q150 104 162 112" fill="none" stroke="#1f2a44" stroke-width="6"/>' +
+        '<path d="M94 110 Q102 104 112 106 M170 110 Q178 104 188 106" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="5" stroke-linecap="round"/>' +
+        '<rect x="90" y="104" width="44" height="32" rx="14" fill="#5b7bd8" opacity=".25"/><rect x="166" y="104" width="44" height="32" rx="14" fill="#5b7bd8" opacity=".25"/>') +
+      L('scarf', '<path d="M82 204 Q150 240 218 204" fill="none" stroke="#c92a2a" stroke-width="30" stroke-linecap="round"/><path d="M82 204 Q150 240 218 204" fill="none" stroke="url(#scarfG)" stroke-width="24" stroke-linecap="round"/>' +
+        '<path d="M100 200 Q150 228 200 200" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="5" stroke-linecap="round"/>' +
+        '<g class="flutter"><path d="M188 218 L216 214 L222 272 Q206 284 190 272Z" fill="url(#scarfG)" stroke="#c92a2a" stroke-width="3" stroke-linejoin="round"/><path d="M191 240 H219 M191 256 H220" stroke="#fff" stroke-opacity=".6" stroke-width="4"/><path d="M194 274 V284 M204 277 V288 M214 274 V284" stroke="#c92a2a" stroke-width="3" stroke-linecap="round"/></g>') +
+      L('collar', '<g fill="#fff" stroke="#e3e8f0" stroke-width="2"><circle cx="88" cy="203" r="14"/><circle cx="106" cy="215" r="15"/><circle cx="128" cy="222" r="15"/><circle cx="150" cy="224" r="15"/><circle cx="172" cy="222" r="15"/><circle cx="194" cy="215" r="15"/><circle cx="212" cy="203" r="14"/></g>');
+
+    /* ---- particle effects ---- */
+    let rain = '', snow = '', sparks = '';
+    for (let i = 0; i < 18; i++) {
+      const x = i % 2 === 0 ? -45 + pr(i) * 115 : 285 + pr(i + 40) * 60;
+      rain += '<line class="rd" x1="' + x.toFixed(0) + '" y1="-70" x2="' + (x - 5).toFixed(0) + '" y2="-50" style="animation-duration:' + (0.7 + pr(i + 7) * 0.5).toFixed(2) + 's;animation-delay:-' + (pr(i + 13) * 2).toFixed(2) + 's"/>';
+    }
+    [-20, 30, 300, 330].forEach((x, i) => { rain += '<ellipse class="rip" cx="' + x + '" cy="332" rx="14" ry="4" style="animation-delay:-' + (i * 0.4).toFixed(1) + 's"/>'; });
+    for (let i = 0; i < 24; i++) {
+      snow += '<circle class="sf" cx="' + (-45 + pr(i + 3) * 390).toFixed(0) + '" cy="-70" r="' + (2.5 + pr(i + 9) * 2.5).toFixed(1) + '" style="animation-duration:' + (5 + pr(i + 5) * 5).toFixed(1) + 's;animation-delay:-' + (pr(i + 21) * 9).toFixed(1) + 's"/>';
+    }
+    [[-8, 30, 26], [292, 52, 22], [-22, 190, 20], [302, 214, 26]].forEach((p, i) => {
+      sparks += '<text class="sp" x="' + p[0] + '" y="' + p[1] + '" font-size="' + p[2] + '" style="animation-delay:-' + (i * 0.6).toFixed(1) + 's">✨</text>';
+    });
+    const fx =
+      '<g class="fx fx-rain">' + rain + '</g><g class="fx fx-snow">' + snow + '</g>' +
+      '<g class="fx fx-wind"><path class="wl" d="M-60 90 q25 -14 50 0 t50 0 t50 0" /><path class="wl" style="animation-delay:-.7s" d="M-60 170 q25 -14 50 0 t50 0 t50 0"/><path class="wl" style="animation-delay:-1.3s" d="M-60 250 q25 -14 50 0 t50 0 t50 0"/>' +
+      '<text class="lf" x="-40" y="120" font-size="30">🍃</text><text class="lf" style="animation-delay:-2.4s" x="-40" y="220" font-size="26">🍂</text></g>' +
+      '<g class="fx fx-sparkle">' + sparks + '</g>';
+
+    return '<svg viewBox="-50 -70 400 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' + defs +
+      '<ellipse class="shadow" cx="150" cy="331" rx="88" ry="10" fill="rgba(31,42,68,.2)"/>' +
+      '<g class="poke"><g class="dressfx"><g class="bounce"><g class="idle">' +
+        L('umbrella',
+          '<line x1="205" y1="-6" x2="252" y2="256" stroke="#7a5230" stroke-width="7" stroke-linecap="round"/><path d="M252 256 v14 q0 11 -11 11" fill="none" stroke="#7a5230" stroke-width="7" stroke-linecap="round"/>' +
+          '<path d="M95 -4 Q205 -102 315 -4 Q289 -20 260 -4 Q233 -20 205 -4 Q177 -20 150 -4 Q122 -20 95 -4Z" fill="#ff6b9d" stroke="#d6336c" stroke-width="4" stroke-linejoin="round"/>' +
+          '<path d="M205 -54 Q160 -22 150 -4 M205 -54 Q250 -22 260 -4 M205 -54 V-4" fill="none" stroke="#d6336c" stroke-opacity=".55" stroke-width="3"/>' +
+          '<path d="M140 -22 Q170 -64 205 -60" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="6" stroke-linecap="round"/><circle cx="205" cy="-56" r="5" fill="#d6336c"/>') +
+        L('kite',
+          '<line x1="252" y1="256" x2="296" y2="44" stroke="#868e96" stroke-width="2.5"/>' +
+          '<g class="kite-sway"><polygon points="296,-30 326,4 296,48 266,4" fill="#ff6b9d" stroke="#d6336c" stroke-width="3.5" stroke-linejoin="round"/><polygon points="296,-30 326,4 296,4" fill="#ffa8c8"/>' +
+          '<path d="M296 -30 V48 M266 4 H326" stroke="#fff" stroke-width="2.5"/><path d="M296 48 q-12 14 0 26 t0 26 t0 26" fill="none" stroke="#ffd43b" stroke-width="5" stroke-dasharray="7 5" stroke-linecap="round"/></g>') +
+        '<g class="bodyg">' +
+          '<ellipse cx="150" cy="245" rx="70" ry="72" fill="url(#furG)"/><ellipse cx="150" cy="256" rx="44" ry="46" fill="url(#bellyG)"/>' +
+          torso + '<ellipse cx="150" cy="245" rx="70" ry="72" fill="url(#shadeG)"/>' +
+          foot(108) + foot(192) + L('boots', boot(108) + boot(192)) +
+        '</g>' +
+        '<g class="headg">' + ears +
+          '<ellipse cx="150" cy="198" rx="64" ry="11" fill="rgba(20,10,30,.16)"/>' +
+          '<ellipse cx="150" cy="118" rx="86" ry="78" fill="url(#furG)"/><ellipse cx="112" cy="66" rx="40" ry="14" transform="rotate(-18 112 66)" fill="#fff" opacity=".24"/>' +
+          patches + face + headwear +
+          '<g class="fx fx-sweat"><g transform="translate(70 96)"><path class="sd" d="M0 0 Q9 14 0 22 Q-9 14 0 0Z" fill="#74c0fc" stroke="#fff" stroke-width="2"/></g><g transform="translate(232 90)"><path class="sd" style="animation-delay:-1.2s" d="M0 0 Q9 14 0 22 Q-9 14 0 0Z" fill="#74c0fc" stroke="#fff" stroke-width="2"/></g></g>' +
+          '<g class="fx fx-breath"><g transform="translate(178 170)"><circle class="pf" r="8" fill="#fff" stroke="#cfe3ff" stroke-width="2"/></g><g transform="translate(178 170)"><circle class="pf" style="animation-delay:-.8s" r="6" fill="#fff" stroke="#cfe3ff" stroke-width="2"/></g><g transform="translate(178 170)"><circle class="pf" style="animation-delay:-1.6s" r="7" fill="#fff" stroke="#cfe3ff" stroke-width="2"/></g></g>' +
+        '</g>' +
+        '<g class="armsg">' + arm('L') + arm('R') + '</g>' +
+      '</g></g></g></g>' + fx + '</svg>';
   },
-  mount(el) { this.el = el; el.innerHTML = this.svg(); },
-  dress(layers, scenario) {
+
+  mount(el, pal) {
+    this.el = el; this.pal = pal; this.key = '';
+    el.dataset.pal = pal;
+    el.innerHTML = this.svg();
+    this.track = el.querySelector('.etrack');
+  },
+
+  dress(layers, scenario, opts) {
     if (!this.el) return;
+    opts = opts || {};
     const set = new Set(layers);
     if (set.has('raincoat')) set.add('hood');
+    if (set.has('jacket')) set.add('collar');
     this.el.querySelectorAll('[data-layer]').forEach(g => g.classList.toggle('on', set.has(g.dataset.layer)));
     this.el.dataset.scenario = scenario;
+    this.el.dataset.mood = opts.mood || 'happy';
+    this.el.dataset.fx = (opts.fx || []).join(' ');
+    this.el.dataset.hold = set.has('umbrella') ? 'umbrella' : set.has('kite') ? 'kite' : 'none';
     const key = Array.from(set).sort().join(',');
     if (key !== this.key) {
+      if (this.key && !reduceMotion) { this.el.classList.remove('pop'); void this.el.offsetWidth; this.el.classList.add('pop'); }
       this.key = key;
-      this.el.classList.remove('pop'); void this.el.offsetWidth; this.el.classList.add('pop');
     }
-    this.el.setAttribute('aria-label', 'Sunny Bear is wearing: ' + outfitText(layers));
+    this.el.setAttribute('aria-label', PALS[this.pal].name + '. Tap to say hi! Outfit: ' + outfitText(layers));
+  },
+
+  look(x, y) { if (this.track) this.track.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)'; },
+  talk(on) { if (this.el) this.el.classList.toggle('talking', !!on); },
+  wave() {
+    if (reduceMotion || !this.el) return;
+    const el = this.el;
+    el.classList.remove('wave'); void el.offsetWidth; el.classList.add('wave');
+    clearTimeout(this.waveT); this.waveT = setTimeout(() => el.classList.remove('wave'), 2800);
+  },
+  setBubble(text, base) {
+    if (base) this.baseBubble = text;
+    $('bubble').textContent = text;
+  },
+  poke() {
+    const el = this.el; if (!el) return;
+    if (!reduceMotion) { el.classList.remove('jump'); void el.offsetWidth; el.classList.add('jump'); }
+    const lines = ['Hehe! That tickles! 😆', 'Boing! Again, again! 🤸', 'You found my tickle spot! 💖', 'Wheee! 🌈', 'I love checking the weather with you! ☀️'];
+    this.setBubble(lines[Math.floor(Math.random() * lines.length)], false);
+    clearTimeout(this.bubbleT);
+    this.bubbleT = setTimeout(() => { $('bubble').textContent = this.baseBubble; }, 3200);
+    if (!reduceMotion) {
+      ['💖', '✨', '⭐', '💛', '🌈'].forEach((h, i) => {
+        const s = document.createElement('span'); s.className = 'heart'; s.textContent = h; s.setAttribute('aria-hidden', 'true');
+        s.style.cssText = 'left:' + (30 + i * 10 + rand(-4, 4)).toFixed(0) + '%;top:' + rand(6, 26).toFixed(0) + '%;--hx:' + rand(-40, 40).toFixed(0) + 'px;animation-delay:' + (i * 0.07).toFixed(2) + 's';
+        el.appendChild(s); setTimeout(() => s.remove(), 1700);
+      });
+    }
+    Sound.boing();
   }
 };
+
+/* how the buddy feels, and which particles float around, for the current weather */
+function moodFor(d, info, r) {
+  if (r.preview) return { hot: 'hot', rainy: 'happy', cold: 'cold', windy: 'happy' }[r.id] || 'happy';
+  if (info.kind === 'storm') return 'wow';
+  if (r.id === 'hot' && d.feels >= 30) return 'hot';
+  if (r.id === 'cold') return 'cold';
+  return 'happy';
+}
+function fxFor(d, info, r) {
+  if (r.preview) return { hot: ['sweat', 'sparkle'], rainy: ['rain'], cold: ['breath', 'shiver'], windy: ['wind'] }[r.id] || [];
+  const k = info.kind, fx = [];
+  if (k === 'storm') fx.push('rain', 'tremble');
+  else if (k === 'rain') fx.push('rain');
+  else if (k === 'snow') fx.push('snow', 'breath', 'shiver');
+  else if (r.id === 'cold') fx.push('breath', 'shiver');
+  else if (r.id === 'hot') { if (d.feels >= 30) fx.push('sweat'); if (d.day) fx.push('sparkle'); }
+  else if (d.day && k !== 'fog' && k !== 'cloud') fx.push('sparkle');
+  if (d.wind >= 30 && fx.indexOf('wind') < 0) fx.push('wind');
+  return fx;
+}
+
 
 /* =========================================================
    5. SKY BACKGROUND
@@ -1169,8 +1389,8 @@ const BADGES = [
   { id:'streak3',  e:'🔥', t:'Streak Star',           d:'Play the quiz 3 days in a row',          test: g => g.best >= 3 },
   { id:'streak7',  e:'🌈', t:'Rainbow Streak',        d:'Play the quiz 7 days in a row',          test: g => g.best >= 7 },
   { id:'globe',    e:'🌍', t:'Globe Trotter',         d:'Tap 5 cities on the world map',          test: g => g.mapVisits.length >= 5 },
-  { id:'fashion',  e:'🎩', t:'Fashion Star',          d:'Try all 4 outfits on Sunny Bear',        test: g => g.tried.length >= 4 },
-  { id:'listener', e:'🗣️', t:'Good Listener',         d:'Let Sunny Bear read the weather to you', test: g => g.voice },
+  { id:'fashion',  e:'🎩', t:'Fashion Star',          d:'Try all 4 outfits on your buddy',        test: g => g.tried.length >= 4 },
+  { id:'listener', e:'🗣️', t:'Good Listener',         d:'Let your buddy read the weather to you', test: g => g.voice },
   { id:'sound',    e:'🎵', t:'Sound Explorer',        d:'Turn on weather sounds',                 test: g => g.sound }
 ];
 
@@ -1289,6 +1509,7 @@ const Voice = {
   },
   setUI(on) {
     this.speaking = on;
+    Bear.talk(on);
     $('speakBtn').textContent = on ? '⏹ Stop reading' : '🔊 Read it to me';
   },
   speak(text) {
@@ -1449,7 +1670,8 @@ const Sound = (function () {
     start(name) { if (!init()) return false; ctx.resume(); on = true; play(name); return true; },
     play,
     stop() { on = false; if (ctx) fadeOut(); scene = null; },
-    setVolume(v) { vol = v; if (master) master.gain.setTargetAtTime(v, ctx.currentTime, .05); }
+    setVolume(v) { vol = v; if (master) master.gain.setTargetAtTime(v, ctx.currentTime, .05); },
+    boing() { if (!on || !ctx) return; try { blip(master, ctx.currentTime, 300, 780, .2, .22); } catch (e) {} }
   };
 })();
 function updateSoundUI() {
@@ -1572,7 +1794,7 @@ function buildSpeech(d, r, info) {
     return 'Let me show you my ' + r.title + ' outfit! I am ready with: ' + outfit + '. ' + r.tagline + ' ' +
       (r.todo[0] ? r.todo[0].t + '. ' + r.todo[0].x : '');
   }
-  let s = 'Hi! I am Sunny Bear. In ' + d.place.name + ' it is ' + cvt(d.temp) + ' degrees ' +
+  let s = 'Hi! I am ' + PALS[state.pal].name + '. In ' + d.place.name + ' it is ' + cvt(d.temp) + ' degrees ' +
     (state.unit === 'C' ? 'Celsius' : 'Fahrenheit') + '. The weather is ' + info.text.toLowerCase() + '. ' + r.tagline +
     ' My outfit: ' + outfit + '. ';
   if (r.todo[0]) s += 'Idea for today: ' + r.todo[0].t + '. ' + r.todo[0].x + ' ';
@@ -1586,8 +1808,8 @@ function renderReco() {
   const real = state.reco || (state.reco = buildReco(d));
   const r = state.preview ? previewReco(state.preview) : real;
 
-  Bear.dress(r.bear, r.id);
-  $('bubble').textContent = r.preview ? "Ta-da! Here is my " + r.title.toLowerCase() + " outfit!" : r.tagline + ' ' + info.emoji;
+  Bear.dress(r.bear, r.id, { mood: moodFor(d, info, r), fx: fxFor(d, info, r) });
+  Bear.setBubble(r.preview ? "Ta-da! Here is my " + r.title.toLowerCase() + " outfit!" : r.tagline + ' ' + info.emoji, true);
   $('outfitLine').textContent = '🎒 My outfit: ' + outfitText(r.bear);
 
   $('scCard').style.setProperty('--sc', r.color);
@@ -2008,6 +2230,25 @@ setInterval(() => {
   loadWorld();
 }, 15 * 60 * 1000);
 
+/* choose your buddy + eyes that follow your finger or mouse */
+function setPal(p, silent) {
+  if (!PALS[p]) p = 'bear';
+  state.pal = p; store.set('sb_pal', p);
+  Bear.mount($('bear'), p);
+  document.querySelectorAll('.pals button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pal === p)));
+  $('tryLbl').textContent = '🎩 Dress up ' + PALS[p].name + ':';
+  if (state.data) renderReco();
+  if (!silent) Bear.wave();
+}
+document.querySelectorAll('.pals button').forEach(b => b.addEventListener('click', () => setPal(b.dataset.pal)));
+function onLook(e) {
+  if (reduceMotion || !Bear.el) return;
+  const r = Bear.el.getBoundingClientRect();
+  const cx = r.left + r.width * .5, cy = r.top + r.height * .42;
+  const dx = e.clientX - cx, dy = e.clientY - cy, dist = Math.hypot(dx, dy) || 1, k = Math.min(1, dist / 260);
+  Bear.look(dx / dist * k * 5, dy / dist * k * 4);
+}
+
 /* offline support (optional sw.js) */
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
@@ -2018,7 +2259,13 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
    ========================================================= */
 function start() {
   Voice.init();
-  Bear.mount($('bear'));
+  setPal(state.pal, true);
+  const bearEl = $('bear');
+  bearEl.addEventListener('click', () => Bear.poke());
+  bearEl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); Bear.poke(); } });
+  window.addEventListener('pointermove', onLook, { passive: true });
+  setTimeout(() => Bear.wave(), 1500);
+  setInterval(() => { if (!document.hidden) Bear.wave(); }, 14000);
   WorldMap.build();
   setUnit(state.unit);
   updateBell(); renderChips(); renderQuiz(); renderBadges(); updateSoundUI();
